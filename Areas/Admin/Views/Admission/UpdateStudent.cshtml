@@ -1,0 +1,20 @@
+@using WebApplication.Areas.Admin.Models
+@using System.Collections.Generic
+
+@model ApplicationViewModel
+@{
+    ViewData["Title"] = "AdmissionForm";
+}
+<br />
+<div class="row">
+    @using (Html.BeginForm("UpdateStudent", "Admission", FormMethod.Post, new { id = "StudentForm", enctype = "multipart/form-data" }))
+    {
+        @Html.Partial("~/Areas/Admin/Views/Shared/_EditStudent.cshtml")
+    }
+</div>
+<script src="/js/imgPreview.js"></script>
+<script>
+    $("#row").ready(function () {
+
+    })
+</script>

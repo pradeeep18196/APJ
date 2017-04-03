@@ -1,0 +1,26 @@
+@using WebApplication.Areas.Admin.Models
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<br /><br />
+<div class="panel panel-primary">
+    <div class="panel-heading">Edit Student</div>
+    <br />
+    <div class="panel-body">
+        @using (Html.BeginForm("UpdateStudent", "Admission", FormMethod.Get))
+        {
+            <label>Application No</label> @Html.TextBox("ApplicationNo",null,new { @class="form-control"})
+            <br/>
+            <button class="btn btn-info" id="edit" name="edit">Edit</button>
+        }
+    </div>
+    <br/>
+</div>
+<br /><br />
+<div class="row">
+    @using (Html.BeginForm("UpdateStudent", "Admission", FormMethod.Post, new { id = "StudentForm", enctype = "multipart/form-data" }))
+    {
+        <div id=Edit></div>
+    }
+</div>
