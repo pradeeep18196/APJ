@@ -1,0 +1,104 @@
+﻿@model ApplicationViewModel
+
+<link href="~/css/style-screen.css" rel="stylesheet" type="text/css" media="screen" />
+<link rel="stylesheet" href="~/css/style-print.css" type="text/css" media="print">
+
+<script type="text/javascript">
+    $(window).on('load', function () {
+        $('#exampleModalLong').modal('show');
+    });
+
+    function printApplication() {
+        window.print();
+    }
+    function printAcknowledgement() {
+        var win = window.open("#","_self");
+        win.document.write($("#Acknowledgement").html());
+        win.print();
+    }
+</script>
+
+<div class="noprint">
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3>Application is Sucessfully registered with </h3> @ViewBag.AppNo
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="printApplication()" data-dismiss="modal">Print Application Form</button>
+                    <button type="button" class="btn btn-primary" onclick="printAcknowledgement()">Print acknowledge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ApplicationDiv">
+    <div class="table">
+        <div class="row">
+            <div class="col-lg-3">
+                <img src="~/images/APJ_LOGO.jpg" />
+            </div>
+            <div class="col-lg-9">
+                <img src="~/images/APJ_LOGO.jpg" />
+            </div>
+        </div>
+    </div>
+    <h1><u>APPLICATION FORM</u></h1>
+    <table width="100%">      
+        <tr><td><h2>Application No</h2></td><td><h2>:&emsp;&emsp;&emsp; </h2></td><td colspan="1.5"><h2>@ViewBag.AppNo</h2></td></tr>
+        <tr><td><h2>Date</h2></td><td><h2>:</h2></td><td><h2>@Model.DateOfAdmission</h2></td></tr>
+        <tr><td><h2>1. Name of The Student</h2></td><td><h2>:</h2></td><td><h2>@Model.StudentName</h2></td></tr>
+        <tr><td><h2>2. Father's/Guardian's Name </h2></td><td><h2>:</h2></td><td><h2>@Model.FatherName</h2></td></tr>
+        <tr><td><h2>3. Mothers Name</h2></td><td><h2>:</h2></td><td><h2>@Model.MotherName</h2></td></tr>
+        <tr><td><h2>4. Aadhar No  </h2></td><td><h2>:</h2></td><td><h2>@Model.AadharNo</h2></td></tr>
+        <tr><td><h2>5. 10th Pass Type </h2></td><td><h2>:</h2></td><td><h2>@Model.SchoolEducation</h2></td></tr>
+        <tr><td><h2>6. Hall Ticket No </h2></td><td><h2>:</h2></td><td><h2>@Model.HallTicketNo</h2></td></tr>
+        <tr><td><h2>7. GPA / GRADE / Obtained</h2></td><td><h2>:</h2></td><td><h2>@Model.GradePoint</h2></td></tr>
+        <tr><td><h2>9. Date of Birth as per SSC </h2></td><td><h2>:</h2></td><td><h2>@Model.DOB</h2></td></tr>
+        <tr><td><h2>10. Identification Marks 1. </h2></td><td><h2>:</h2></td><td><h2>@Model.IdentificationMarks1</h2></td></tr>
+        <tr><td><h2>11. Identification Marks 2. </h2></td><td><h2>:</h2></td><td><h2>@Model.IdentificationMarks2</h2></td></tr>
+        <tr><td><h2>12. Name of the School</h2></td><td><h2>:</h2></td><td><h2>@Model.SchoolName</h2></td></tr>
+        <tr><td><h2>13. School Address</h2></td><td><h2>:</h2></td><td><h2>@Model.SchoolAddress</h2></td></tr>
+        <tr><td><h2>14. Course Preferred </h2></td><td><h2>:</h2></td><td><h2>@Model.CoursePreferred</h2></td></tr>
+        <tr><td><h2>15. Mediun of Instruction</h2></td><td><h2>:</h2></td><td><h2>@Model.Medium</h2></td></tr>
+        <tr><td><h2>16. Language  </h2></td><td><h2>:</h2></td><td><h2>@Model.Language</h2></td></tr>
+        <tr><td><h2>17. Religion  </h2></td><td><h2>:</h2></td><td><h2>@Model.Religion</h2></td></tr>
+        <tr><td><h2>18. Caste  </h2></td><td><h2>:</h2></td><td><h2>@Model.Caste</h2></td></tr>
+        <tr><td><h2>19. Sub Caste </h2></td><td><h2>:</h2></td><td><h2>@Model.SubCaste</h2></td></tr>
+        <tr><td><h2>20. Mother Toungue</h2></td><td><h2>:</h2></td><td><h2>@Model.MotherName</h2></td></tr>
+        <tr><td><h2>21. FirstYearFee  </h2></td><td><h2>:</h2></td><td><h2>@Model.FirstYearFee</h2></td></tr>
+        <tr><td><h2>22. SecondYearFee </h2></td><td><h2>:</h2></td><td><h2>@Model.SecondYearFee</h2></td></tr>
+        <tr><td><h2>23. ParentOccupation </h2></td><td><h2>:</h2></td><td><h2>@Model.ParentOccupation</h2></td></tr>
+        <tr><td><h2>24. Address For Correspondence  </h2></td><td><h2>:</h2></td><td><h2>@Model.StudentAddress</h2></td></tr>
+        <tr><td><h2>25. Contact Number</h2></td><td><h2>:</h2></td><td><h2>@Model.ContactNo</h2></td></tr>
+    </table>
+</div>
+
+
+
+<div id="Acknowledgement">
+    <div class="AcknowledgementDiv">
+        <table width="100%">
+            <tr><td><h2>Date</h2></td><td><h2>:&emsp;&emsp;&emsp;</h2></td><td><h2>@Model.DateOfAdmission</h2></td></tr>
+            <tr><td><h2>Student Name</h2></td><td><h2>:</h2></td><td><h2>@Model.StudentName</h2></td></tr>
+            <tr><td><h2>Father Name</h2></td><td><h2>:</h2></td><td><h2>@Model.FatherName</h2></td></tr>
+            <tr><td><h2>Course Details</h2></td><td><h2>:</h2></td><td><h2>@Model.CoursePreferred</h2></td></tr>
+            <tr><td><h2>First Year Fee</h2></td><td><h2>:</h2></td><td><h2>@Model.FirstYearFee</h2></td></tr>
+            <tr><td><h2>Second Year Fee</h2></td><td><h2>:</h2></td><td><h2>@Model.SecondYearFee</h2></td></tr>
+            <tr><td><h2>Amount Paid </h2></td><td><h2>:</h2></td><td><h2></h2></td></tr>
+            <tr><td><h2>Amount Paid In Words </h2></td><td><h2>:</h2></td><td><h2></h2></td></tr>
+            <tr><td><h2>Emp.Code </h2></td><td><h2>:</h2></td><td><h2></h2></td></tr>
+            <tr><td><h2>Mobile No</h2></td><td><h2>:</h2></td><td><h2>@Model.MobileNo</h2></td></tr>
+            <tr><td><h2>Student Signature</h2></td><td><h2>:</h2></td><td><h2></h2></td></tr>
+            <tr><td><h2>Parent Signature</h2></td><td><h2>:</h2></td><td><h2></h2></td></tr>
+            <tr><td><h2>Emp.Signature</h2></td><td><h2>:</h2></td><td><h2></h2></td></tr>
+        </table>
+    </div>
+</div>

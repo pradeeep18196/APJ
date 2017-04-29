@@ -1,0 +1,11 @@
+﻿
+
+@media screen {
+    .ApplicationDiv {
+        visibility: hidden;
+    }
+
+    .AcknowledgementDiv {
+        visibility: hidden;
+    }
+}

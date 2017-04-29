@@ -8,7 +8,10 @@ namespace  WebApplication.Areas.Admin.Models
         {
 
         }
+        //Add-Migration SecondMigration -Context ApplicationDbContext1
+        //Remove-Migration -Context ApplicationDbContext1
 
         public DbSet<ApplicationForm> ApplicationForms{get;set;}
+        public DbSet<Status> Status { get; set; }
     }
 }

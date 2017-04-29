@@ -10,7 +10,8 @@ namespace WebApplication.Areas.Admin.Models
     {
    
         [Key]
-        public int ApplicationNo{get;set;}
+        public int ApplicationId{ get; set; }
+        public string ApplicationNo{get;set;}
         public string StudentName{get; set;}
         public string FatherName{get; set;}
         public string MotherName{get;set;}
@@ -38,7 +39,6 @@ namespace WebApplication.Areas.Admin.Models
         public string MobileNo { set; get; }
         public string IdentificationMarks1{get; set;}
         public string IdentificationMarks2 { get; set; }
-
         [Column(TypeName="Date")]
         public DateTime DateOfAdmission{get; set;}
         public string Photo{get;set;}
@@ -49,5 +49,7 @@ namespace WebApplication.Areas.Admin.Models
         public string SscTc { set; get; }
         public string SscBonafide { set; get; }
         public string AadharCopy { set; get; }
+        public int StatusId { get; set; }
+        public Status Status { get; set; }
     }  
 }

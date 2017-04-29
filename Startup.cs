@@ -92,8 +92,8 @@ namespace WebApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            context.Database.Migrate();
-            //context.Database.EnsureCreated(); 
+            //context.Database.Migrate();
+            context.Database.EnsureCreated(); 
         }
     }
 }

@@ -1,12 +1,15 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace WebApplication.Areas.Admin.Models
 {
-    public class ApplicationViewModel
+    public class ApplicationUpdateViewModel
     {
-        public string ApplicationNo { get; set; }
+        public int ApplicationNo { get; set; }
         [Required]
         [StringLength(30)]
         public string StudentName { get; set; }
@@ -17,7 +20,7 @@ namespace WebApplication.Areas.Admin.Models
         [StringLength(30)]
         public string MotherName { get; set; }
         [Required]
-        [StringLength(12),MinLength(12),MaxLength(12)]
+        [StringLength(12), MinLength(12), MaxLength(12)]
         public string AadharNo { get; set; }
         [Required]
         public string SchoolEducation { get; set; }
@@ -79,5 +82,6 @@ namespace WebApplication.Areas.Admin.Models
         public IFormFile Tc { set; get; }
         public IFormFile Bonafide { set; get; }
         public IFormFile Aadhar { set; get; }
+
     }
 }

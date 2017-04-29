@@ -1,0 +1,6 @@
+﻿@media print
+{
+    .noprint {display:none;}
+    .ApplicationDiv{visibility: visible}
+    h1{text-align: center}
+}

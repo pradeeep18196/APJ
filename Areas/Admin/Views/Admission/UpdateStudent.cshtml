@@ -9,12 +9,6 @@
 <div class="row">
     @using (Html.BeginForm("UpdateStudent", "Admission", FormMethod.Post, new { id = "StudentForm", enctype = "multipart/form-data" }))
     {
-        @Html.Partial("~/Areas/Admin/Views/Shared/_EditStudent.cshtml")
+        @Html.Partial("~/Areas/Admin/Views/Shared/_EditStudent.cshtml",Model)
     }
 </div>
-<script src="/js/imgPreview.js"></script>
-<script>
-    $("#row").ready(function () {
-
-    })
-</script>

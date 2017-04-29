@@ -5,30 +5,33 @@
 @using (Html.BeginForm("ShowAllStudents", "Admission"))
 {
     <label>Date Of Admission</label>
-    <input type="date" class="form-control glyphicon glyphicon-calendar" name="date" >
+    <input type="date" class="form-control glyphicon glyphicon-calendar" name="date">
     <button type="submit" name="submitbtn" id="submitbtn" value="Search" class="btn btn-info">
         <span class="glyphicon glyphicon-search"></span> Search
     </button>
 }
 
-<br/><br/>
+<br /><br />
 
 <table class="table">
-	<tr>
-		<th>ApplicationNo</th>
-		<th>StudentName</th>
-		<th>FatherName</th>
-	</tr>
-	@foreach(var student in Model)
-	{
-		<tr>
-			<td><a href="Index">@student.ApplicationNo</a></td>
-			<td>@student.StudentName</td>
-			<td>@student.FatherName</td>
-		</tr>
+    <tr>
+        <th>ApplicationNo</th>
+        <th>StudentName</th>
+        <th>FatherName</th>
+    </tr>
+    @foreach (var student in Model)
+    {
+        <tr>
+            <td><a href="Index">@student.ApplicationNo</a></td>
+            <td>@student.StudentName</td>
+            <td>@student.FatherName</td>
+        </tr>
     }
 </table>
-   @(ViewBag.PagerCurrentPage+2)
+
+<h1>hello @ViewBag.SelectedDate</h1>
+
+@(ViewBag.PagerCurrentPage + 2)
 
 <!-- pager -->
 @if (ViewBag.Pager.EndPage > 1)
@@ -44,10 +47,11 @@
             </li>
         }
 
-        @for (var page =ViewBag.Pager.CurrentPage;page <= ViewBag.Pager.EndPage; page++)
+        @for (var page = ViewBag.Pager.CurrentPage; page <= ViewBag.Pager.EndPage; page++)
         {
             <li class="@(page == ViewBag.Pager.CurrentPage ? "active" : "")">
-                <a href="ShowAllStudents?page=@page">@page</a>
+                <a href="ShowAllStudents? page=@page">@page</a>
+                @* date=@ViewBag.SelectedDate && *@
             </li>
         }
 
@@ -61,39 +65,40 @@
             </li>
         }
     </ul>
-}				
-<!--
-@if(@ViewBag.Count/3 >= 2)
-{  
-    <ul class="pagination pagination-sm">
-            <li class="page-item">
-                @if (ViewBag.number==1)
-                {
-                    <a href="#" class="page-link" style="pointer-events:none;cursor:default;color:darkgray" ><<</a>
-                }
-                else
-                {
-                    <a href="ShowAllStudents?page=@(ViewBag.number-1)" class="page-link"><<</a>
-                }
-            </li>
-            
-            @for(int i=0;i<@ViewBag.Count/3 && @ViewBag.number<@ViewBag.Count/3;i++)
-            {
-                <li>
-                    @Html.ActionLink(((int)@ViewBag.number+i).ToString(), "ShowAllStudents","Admission",new { page=@ViewBag.number+i})
-                </li>
-            }
-            <li class="page-item">
-            @if(ViewBag.number==ViewBag.Count/3)
-            {
-                <a href="#" class="page-link" style="pointer-events:none;cursor:default;color:darkgray" > >> </a>  
-            }
-            else
-            {
-                <a class="page-link" href="ShowAllStudents?page=@(ViewBag.number+1)">>></a>  
-            }
-            </li>
-    </ul>
 }
-</br>
--->
+    @*
+
+        @if(@ViewBag.Count/3 >= 2)
+        {
+            <ul class="pagination pagination-sm">
+                    <li class="page-item">
+                        @if (ViewBag.number==1)
+                        {
+                            <a href="#" class="page-link" style="pointer-events:none;cursor:default;color:darkgray" ><<</a>
+                        }
+                        else
+                        {
+                            <a href="ShowAllStudents?page=@(ViewBag.number-1)" class="page-link"><<</a>
+                        }
+                    </li>
+
+                    @for(int i=0;i<@ViewBag.Count/3 && @ViewBag.number<@ViewBag.Count/3;i++)
+                    {
+                        <li>
+                            @Html.ActionLink(((int)@ViewBag.number+i).ToString(), "ShowAllStudents","Admission",new { page=@ViewBag.number+i})
+                        </li>
+                    }
+                    <li class="page-item">
+                    @if(ViewBag.number==ViewBag.Count/3)
+                    {
+                        <a href="#" class="page-link" style="pointer-events:none;cursor:default;color:darkgray" > >> </a>
+                    }
+                    else
+                    {
+                        <a class="page-link" href="ShowAllStudents?page=@(ViewBag.number+1)">>></a>
+                    }
+                    </li>
+            </ul>
+        }
+        </br>
+    *@		

@@ -12,6 +12,7 @@ using AutoMapper;
 
 namespace WebApplication.Areas.Admin.Controllers
 {
+
     [Area("Admin")]
     public class AdmissionController : Controller
     {
@@ -27,23 +28,23 @@ namespace WebApplication.Areas.Admin.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        public IActionResult AddStudent()
-        {
-            ViewBags();
-            ApplicationViewModel avm = new ApplicationViewModel();
-            avm.ApplicationNo= _adm.AppNo();
-            return View(avm);
-        }
-
         [NonAction]
-        public void ViewBags()
+        public void LoadDropDownsData()
         {
             ViewBag.SchoolEducation = SelectItems.SchoolEducation();
             ViewBag.Courses = SelectItems.Courses();
             ViewBag.Languages = SelectItems.Languages();
             ViewBag.castes = SelectItems.Castes();
+        }
+        [HttpGet]
+        public IActionResult AddStudent()
+        {
+            LoadDropDownsData();
+            ApplicationViewModel avm = new ApplicationViewModel();
+            avm.ApplicationNo = "";          //_adm.AppNo();
+            avm.DateOfAdmission = DateTime.Now;
+            avm.DOB = DateTime.Now;
+            return View(avm);
         }
 
         [HttpPost]
@@ -52,13 +53,28 @@ namespace WebApplication.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var appform = _mapper.Map<ApplicationForm>(frm);
-                _adm.AddStudent(appform);
-                _adm.SaveImages(null,frm);
-                return RedirectToAction("Index");
+                if (_adm.AppNo(frm.AadharNo) == null)
+                {
+                    _adm.AddStudent(appform);
+                    _adm.SaveImages(_adm.AppNo(), frm);
+                    return RedirectToAction("Conform", frm);   //new { AadharNo = frm.AadharNo });
+                }
+                else
+                {
+                    /////redirect to action which shows an error called THIS CANDIDAE ALREADY EXIXTS with ApplicationNo
+                    //////pending
+                }
             }
-            ViewBags();
-            ViewBag.AppNo = _adm.AppNo();
-            return View("AddStudent", frm);
+            LoadDropDownsData();
+            //ViewBag.AppNo = _adm.AppNo();
+            return View("AddStudent", frm); 
+        }
+
+        public IActionResult Conform(ApplicationViewModel AppForm)
+        {
+
+            ViewBag.AppNo = _adm.AppNo(AppForm.AadharNo);
+            return View(AppForm);
         }
 
         [HttpGet]
@@ -67,12 +83,12 @@ namespace WebApplication.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult UpdateStudent(int ApplicationNo)
+        public IActionResult UpdateStudent(string ApplicationNo)
         {
-            ViewBags();
+            LoadDropDownsData();
             ViewBag.AppNo = ApplicationNo;
             var appform = _adm.getStudent(ApplicationNo);
-            var AppViewForm = _mapper.Map<ApplicationViewModel>(appform);
+            var AppViewForm = _mapper.Map<ApplicationViewModel>(appform);           //
             if (AppViewForm != null)
             {
                 return View(AppViewForm);
@@ -81,13 +97,14 @@ namespace WebApplication.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateStudent(ApplicationViewModel frm)
+        public IActionResult UpdateStudent(ApplicationViewModel frm)                //
         {
             if (ModelState.IsValid)
             {
                 var appform = _mapper.Map<ApplicationForm>(frm);
                 _adm.UpdateStudent(appform);
-                _adm.SaveImages(frm.ApplicationNo, frm);
+                var appform1 = _mapper.Map<ApplicationViewModel>(frm);
+                _adm.SaveImages(frm.ApplicationNo, appform1);
                 return RedirectToAction("EditStudent");
             }
             return View(frm);
@@ -95,27 +112,41 @@ namespace WebApplication.Areas.Admin.Controllers
 
         public PartialViewResult _EditStudent(ApplicationViewModel appform)
         {
-            ViewBags();
+            LoadDropDownsData();
             return PartialView(appform);
         }
-        public IActionResult ShowAllStudents(DateTime? date,int? page=1)
+        public IActionResult ShowAllStudents(DateTime? date, int? page = 1)
         {
-            var pageSize=5;
+            var pageSize = 3;
             Pager pager;
-            List<ApplicationForm> sa;
-            if (date==null)
+            List<ApplicationForm> SList;
+            if (date == null)
             {
                 pager = new Pager(_adm.Count(null), page.Value, pageSize);
-                sa = _adm.GetAllStudents(null, page.Value, pageSize);
+                SList = _adm.GetAllStudents(null, page.Value, pageSize);
+             
             }
             else
             {
                 pager = new Pager(_adm.Count(date), page.Value, pageSize);
-                sa = _adm.GetAllStudents(date, page.Value, pageSize);
+                SList = _adm.GetAllStudents(date, page.Value, pageSize);
+                string NewDate = "";
+                NewDate = NewDate + date.Value.Day + '-' + date.Value.Month + '-' + date.Value.Year;
+                ViewBag.SelectedDate = NewDate;
             }
             ViewBag.Pager = pager;
-            
-            return View(sa);
+            return View(SList);
+        }
+
+        public IActionResult DeleteStudent()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult DeleteStudent(int appno)
+        {
+
+            return View();
         }
     }
 }

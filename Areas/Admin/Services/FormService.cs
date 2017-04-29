@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using System.IO;
 
 namespace WebApplication.Areas.Admin.Services
 {
@@ -22,104 +22,152 @@ namespace WebApplication.Areas.Admin.Services
             _environment = environment;
         }
         public void AddStudent(ApplicationForm appForm)
-        {
-            var appNo = AppNo();
-
-            appForm.Photo = "StudentPhoto_" + appNo.ToString() + ".jpg";
-            appForm.StudentSignature = "StudentSign_" + appNo.ToString() + ".jpg";
-            appForm.ParentSignature = "ParentSign_" + appNo.ToString() + ".jpg";
-            appForm.SscShortMemo = "SscShortMemo_" + appNo.ToString() + ".jpg";
-            appForm.SscLongMemo = "SscLongMemo_" + appNo.ToString() + ".jpg";
-            appForm.SscTc = "SscTc_" + appNo.ToString() + ".jpg";
-            appForm.SscBonafide = "SscBonafide_" + appNo.ToString() + ".jpg";
-            appForm.AadharCopy = "AadharCopy_" + appNo.ToString() + ".jpg";
+        {        
+            appForm.ApplicationNo = AppNo(appForm.CoursePreferred, appForm.DateOfAdmission.Year);
+            appForm.StatusId = 1;
             _context.ApplicationForms.Add(appForm);
             _context.SaveChanges();
         }
-        /*
-        public void SaveImages(ApplicationViewModel appForm)
+        public void SaveImages(string appNo, ApplicationViewModel appForm)
         {
-            var appNo = AppNo();
-            var path = System.IO.Path.Combine(_environment.WebRootPath, "images\\Photos");
-            var StudentPhoto = System.IO.Path.Combine(path, "StudentPhoto_" + appNo.ToString() + ".jpg");
-            var StudentSign = System.IO.Path.Combine(path, "StudentSign_" + appNo.ToString() + ".jpg");
-            var ParentSign = System.IO.Path.Combine(path, "ParentSign_" + appNo.ToString() + ".jpg");
-            var SscShortMemo = System.IO.Path.Combine(path, "SscShortMemo_" + appNo.ToString() + ".jpg");
-            var SscLongMemo = System.IO.Path.Combine(path, "SscLongMemo_" + appNo.ToString() + ".jpg");
-            var SscTc = System.IO.Path.Combine(path, "SscTc_" + appNo.ToString() + ".jpg");
-            var SscBonafide = System.IO.Path.Combine(path, "SscBonafide_" + appNo.ToString() + ".jpg");
-            var AadharCopy = System.IO.Path.Combine(path, "AadharCopy_" + appNo.ToString() + ".jpg");
+            ApplicationForm Form = getStudent(appNo);
+            if (appNo == null)
+                appNo = AppNo(appForm.CoursePreferred, appForm.DateOfAdmission.Year);    
 
-            var fs1 = new System.IO.FileStream(StudentPhoto, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs2 = new System.IO.FileStream(StudentSign, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs3 = new System.IO.FileStream(ParentSign, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs4 = new System.IO.FileStream(SscShortMemo, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs5 = new System.IO.FileStream(SscLongMemo, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs6 = new System.IO.FileStream(SscTc, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs7 = new System.IO.FileStream(SscBonafide, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs8 = new System.IO.FileStream(AadharCopy, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-
-            appForm.StudentPhoto.CopyToAsync(fs1);
-            appForm.StudentSign.CopyToAsync(fs2);
-            appForm.ParentSign.CopyToAsync(fs3);
-            appForm.ShortMemo.CopyToAsync(fs4);
-            appForm.LongMemo.CopyToAsync(fs5);
-            appForm.Tc.CopyToAsync(fs6);
-            appForm.Bonafide.CopyToAsync(fs7);
-            appForm.Aadhar.CopyToAsync(fs8);
+            var path = Path.Combine(_environment.WebRootPath, "images\\Photos");
+            if (appForm.StudentPhoto != null)
+            {
+                Form.Photo = "StudentPhoto_" + appNo.ToString() + ".jpg";
+                var StudentPhoto = Path.Combine(path, Form.Photo);
+                if (File.Exists(StudentPhoto))
+                {
+                    File.Delete(StudentPhoto);
+                }
+                using (FileStream fs1 = new FileStream(StudentPhoto, FileMode.Create, FileAccess.Write))
+                {
+                    appForm.StudentPhoto.CopyTo(fs1);
+                    fs1.Flush();
+                }
+            }
+            if (appForm.StudentSign != null)
+            {
+                Form.StudentSignature = "StudentSign_" + appNo.ToString() + ".jpg";
+                var StudentSign = Path.Combine(path, Form.StudentSignature);
+                if (File.Exists(StudentSign))
+                {
+                    File.Delete(StudentSign);
+                }
+                var fs2 = new FileStream(StudentSign, FileMode.Create, FileAccess.Write);
+                appForm.StudentSign.CopyToAsync(fs2);
+            }
+            if (appForm.ParentSign != null)
+            {
+                Form.ParentSignature = "ParentSign_" + appNo.ToString() + ".jpg";
+                var ParentSign = Path.Combine(path, Form.ParentSignature);
+                if (File.Exists(ParentSign))
+                {
+                    File.Delete(ParentSign);
+                }
+                var fs3 = new FileStream(ParentSign, FileMode.Create, FileAccess.Write);
+                appForm.ParentSign.CopyToAsync(fs3);
+            }
+            if (appForm.ShortMemo != null)
+            {
+                Form.SscShortMemo = "SscShortMemo_" + appNo.ToString() + ".jpg";
+                var SscShortMemo = Path.Combine(path, Form.SscShortMemo);
+                if (File.Exists(SscShortMemo))
+                {
+                    File.Delete(SscShortMemo);
+                }
+                var fs4 = new FileStream(SscShortMemo, FileMode.Create, FileAccess.Write);
+                appForm.ShortMemo.CopyToAsync(fs4);
+            }
+            if (appForm.LongMemo != null)
+            {
+                Form.SscLongMemo = "SscLongMemo_" + appNo.ToString() + ".jpg";
+                var SscLongMemo = Path.Combine(path, Form.SscLongMemo);
+                if (File.Exists(SscLongMemo))
+                {
+                    File.Delete(SscLongMemo);
+                }
+                var fs5 = new FileStream(SscLongMemo, FileMode.Create, FileAccess.Write);
+                appForm.LongMemo.CopyToAsync(fs5);
+            }
+            if (appForm.Tc != null)
+            {
+                Form.SscTc = "SscTc_" + appNo.ToString() + ".jpg";
+                var SscTc = Path.Combine(path, Form.SscTc);
+                if (File.Exists(SscTc))
+                {
+                    File.Delete(SscTc);
+                }
+                var fs6 = new FileStream(SscTc, FileMode.Create, FileAccess.Write);
+                appForm.Tc.CopyToAsync(fs6);
+            }
+            if (appForm.Bonafide != null)
+            {
+                Form.SscBonafide = "SscBonafide_" + appNo.ToString() + ".jpg";
+                var SscBonafide = Path.Combine(path, Form.SscBonafide);
+                if (File.Exists(SscBonafide))
+                {
+                    File.Delete(SscBonafide);
+                }
+                var fs7 = new FileStream(SscBonafide, FileMode.Create, FileAccess.Write);
+                appForm.Bonafide.CopyToAsync(fs7);
+            }
+            if (appForm.Aadhar != null)
+            {
+                Form.AadharCopy = "AadharCopy_" + appNo.ToString() + ".jpg";
+                var AadharCopy = Path.Combine(path, Form.AadharCopy);
+                if (File.Exists(AadharCopy))
+                {
+                    File.Delete(AadharCopy);
+                }
+                var fs8 = new FileStream(AadharCopy, FileMode.Create, FileAccess.Write);
+                appForm.Aadhar.CopyToAsync(fs8);
+            }
+            _context.SaveChanges();
         }
-        */
-        public void SaveImages(int ?appNo, ApplicationViewModel appForm)
+        public string AppNo()
         {
-            if(appNo==null)
-                appNo = AppNo();
-            var path = System.IO.Path.Combine(_environment.WebRootPath, "images\\Photos");
-            var StudentPhoto = System.IO.Path.Combine(path, "StudentPhoto_" + appNo.ToString() + ".jpg");
-            var StudentSign = System.IO.Path.Combine(path, "StudentSign_" + appNo.ToString() + ".jpg");
-            var ParentSign = System.IO.Path.Combine(path, "ParentSign_" + appNo.ToString() + ".jpg");
-            var SscShortMemo = System.IO.Path.Combine(path, "ShortMemo_" + appNo.ToString() + ".jpg");
-            var SscLongMemo = System.IO.Path.Combine(path, "SscLongMemo_" + appNo.ToString() + ".jpg");
-            var SscTc = System.IO.Path.Combine(path, "SscTc_" + appNo.ToString() + ".jpg");
-            var SscBonafide = System.IO.Path.Combine(path, "SscBonafide_" + appNo.ToString() + ".jpg");
-            var AadharCopy = System.IO.Path.Combine(path, "AadharCopy_" + appNo.ToString() + ".jpg");
-
-            var fs1 = new System.IO.FileStream(StudentPhoto, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs2 = new System.IO.FileStream(StudentSign, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs3 = new System.IO.FileStream(ParentSign, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs4 = new System.IO.FileStream(SscShortMemo, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs5 = new System.IO.FileStream(SscLongMemo, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs6 = new System.IO.FileStream(SscTc, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs7 = new System.IO.FileStream(SscBonafide, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-            var fs8 = new System.IO.FileStream(AadharCopy, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-
-            appForm.StudentPhoto.CopyToAsync(fs1);
-            appForm.StudentSign.CopyToAsync(fs2);
-            appForm.ParentSign.CopyToAsync(fs3);
-            appForm.ShortMemo.CopyToAsync(fs4);
-            appForm.LongMemo.CopyToAsync(fs5);
-            appForm.Tc.CopyToAsync(fs6);
-            appForm.Bonafide.CopyToAsync(fs7);
-            appForm.Aadhar.CopyToAsync(fs8);
+            return "";
         }
-
-        public int AppNo()
+        public string AppNo(string CName,int year)
         {
-            var appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Select(m => m.ApplicationNo).FirstOrDefault();
-            return ++appNo;
+            var rollno = year % 100;
+            string appNo="";
+
+            //pending
+            if (CName.Contains("M.P.C"))
+            {
+                appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m=>m.CoursePreferred.Contains("M.P.C")).Select(m => m.ApplicationNo).FirstOrDefault();
+                if(appNo==null)
+                    appNo = (rollno.ToString()) + (rollno + 2) + 11000;
+            }
+            else if (CName.Contains("Bi.P.C"))
+            {
+                appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m => m.CoursePreferred.Contains("Bi.P.C")).Select(m => m.ApplicationNo).FirstOrDefault();
+                if (appNo == null)
+                    appNo = (rollno.ToString()) + (rollno + 2) + 12000;
+            }
+            else if (CName.Contains("M.E.C"))
+            {
+                appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m => m.CoursePreferred.Contains("M.E.C")).Select(m => m.ApplicationNo).FirstOrDefault();
+                if (appNo == null)
+                    appNo = (rollno.ToString()) + (rollno + 2) + 13000;
+            }
+            else if(CName.Contains("C.E.C"))
+            {
+                appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m => m.CoursePreferred.Contains("C.E.C")).Select(m => m.ApplicationNo).FirstOrDefault();
+                if (appNo == null)
+                    appNo = (rollno.ToString()) + (rollno + 2) + 14000;
+            }
+            appNo = (int.Parse(appNo) + 1).ToString();
+            return appNo;
         }
 
         public void UpdateStudent(ApplicationForm appForm)
         {
-            appForm.Photo = "StudentPhoto_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.StudentSignature = "StudentSign_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.ParentSignature = "ParentSign_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.ParentSignature = "ParentSign_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.SscShortMemo = "SscShortMemo_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.SscLongMemo = "SscLongMemo_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.SscTc = "SscTc_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.SscBonafide = "SscBonafide_" + appForm.ApplicationNo.ToString() + ".jpg";
-            appForm.AadharCopy = "AadharCopy_" + appForm.ApplicationNo.ToString() + ".jpg";
-
             // _context.ApplicationForms.Attach(appForm).State=EntityState.Modified;
             // _context.ApplicationForms.Update(appForm);
 
@@ -149,10 +197,6 @@ namespace WebApplication.Areas.Admin.Services
             appForm1.ContactNo = appForm.ContactNo;
             appForm1.MobileNo = appForm.MobileNo;
             appForm1.DateOfAdmission = appForm.DateOfAdmission;
-            appForm1.Photo = appForm.Photo;
-            appForm1.StudentSignature = appForm.StudentSignature;
-            appForm1.ParentSignature = appForm.ParentSignature;
-
             _context.SaveChanges();
         }
         /*
@@ -168,25 +212,37 @@ namespace WebApplication.Areas.Admin.Services
                     _context.SaveChanges();
                 }
         */
-        public ApplicationForm getStudent(int AppNo)
+        public ApplicationForm getStudent(string AppNo)
         {
-            return _context.ApplicationForms.Where(s => s.ApplicationNo == AppNo).FirstOrDefault();
+            return _context.ApplicationForms.Where(s => s.ApplicationNo == AppNo.ToString() && s.StatusId == 1).FirstOrDefault();
         }
         public List<ApplicationForm> GetAllStudents(DateTime? date, int page, int pageSize)
         {
             if (date == null)
             {
-                var Student = _context.ApplicationForms.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                var Student = _context.ApplicationForms.Where(s => s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 return Student;
             }
-            var Students = _context.ApplicationForms.Where(s => s.DateOfAdmission == date).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var Students = _context.ApplicationForms.Where(s => s.DateOfAdmission == date && s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return Students;
         }
-        public int Count(DateTime ?Date)
+        public int Count(DateTime? Date)
         {
-            if(Date!=null)
-                return _context.ApplicationForms.Where(date=>date.DateOfAdmission==Date).Count();
+            if (Date != null)
+                return _context.ApplicationForms.Where(date => date.DateOfAdmission == Date).Count();
             return _context.ApplicationForms.Count();
+        }
+
+        public void DeleteStudent(int appno)
+        {
+            var appform=_context.ApplicationForms.Where(app => app.ApplicationNo == appno.ToString()).FirstOrDefault();
+            appform.StatusId = 0;
+            _context.SaveChanges();
+        }
+
+        public string AppNo(string AadharNo)
+        {
+            return _context.ApplicationForms.Where(a => a.AadharNo == AadharNo).Select(s=>s.ApplicationNo).FirstOrDefault();
         }
     }
 }

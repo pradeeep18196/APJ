@@ -12,5 +12,9 @@ public class AutoMapperProfileConfiguration : Profile
     {
         CreateMap<ApplicationViewModel, ApplicationForm>();
         CreateMap<ApplicationForm,ApplicationViewModel>();
+        CreateMap<ApplicationUpdateViewModel, ApplicationForm>();
+        CreateMap<ApplicationForm,ApplicationUpdateViewModel > ();
+        CreateMap<ApplicationViewModel, ApplicationUpdateViewModel>();
+        CreateMap<ApplicationUpdateViewModel, ApplicationViewModel>();
     }
 }
