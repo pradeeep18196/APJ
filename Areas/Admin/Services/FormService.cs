@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using WebApplication.Areas.Admin.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
 using System.IO;
+using WebApplication.Data;
 
 namespace WebApplication.Areas.Admin.Services
 {
     public class Admission : IAdmission
     {
-        private readonly ApplicationDbContext1 _context;
+        private readonly ApplicationDbContext _context;
         private IHostingEnvironment _environment;
-        public Admission(ApplicationDbContext1 context, IHostingEnvironment environment)
+        public Admission(ApplicationDbContext context, IHostingEnvironment environment)
         {
             _context = context;
             _environment = environment;
@@ -191,7 +187,6 @@ namespace WebApplication.Areas.Admin.Services
             appForm1.MotherTongue = appForm.MotherTongue;
             appForm1.FirstYearFee = appForm.FirstYearFee;
             appForm1.SecondYearFee = appForm.SecondYearFee;
-            appForm1.BalanceFee = appForm.BalanceFee;
             appForm1.ParentOccupation = appForm.ParentOccupation;
             appForm1.StudentAddress = appForm.StudentAddress;
             appForm1.ContactNo = appForm.ContactNo;
@@ -212,9 +207,13 @@ namespace WebApplication.Areas.Admin.Services
                     _context.SaveChanges();
                 }
         */
-        public ApplicationForm getStudent(string AppNo)
+        public ApplicationForm getStudent(string AppNo_AadharNo)
         {
-            return _context.ApplicationForms.Where(s => s.ApplicationNo == AppNo.ToString() && s.StatusId == 1).FirstOrDefault();
+            if(AppNo_AadharNo.Length==12)
+            {
+                return _context.ApplicationForms.Where(s => s.AadharNo == AppNo_AadharNo.ToString() && s.StatusId == 1).FirstOrDefault();
+            }
+            return _context.ApplicationForms.Where(s => s.ApplicationNo == AppNo_AadharNo.ToString() && s.StatusId == 1).FirstOrDefault();
         }
         public List<ApplicationForm> GetAllStudents(DateTime? date, int page, int pageSize)
         {
@@ -223,26 +222,44 @@ namespace WebApplication.Areas.Admin.Services
                 var Student = _context.ApplicationForms.Where(s => s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 return Student;
             }
-            var Students = _context.ApplicationForms.Where(s => s.DateOfAdmission == date && s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var Students = _context.ApplicationForms.Where(s => s.DateOfAdmission == date ).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return Students;
         }
         public int Count(DateTime? Date)
         {
+            int count;
             if (Date != null)
-                return _context.ApplicationForms.Where(date => date.DateOfAdmission == Date).Count();
-            return _context.ApplicationForms.Count();
+                count= _context.ApplicationForms.Where(date => date.DateOfAdmission == Date).Count();
+            else
+                count =_context.ApplicationForms.Count();
+            return count;
         }
 
-        public void DeleteStudent(int appno)
+        public bool DeleteStudent(string AppNo_AadharNo)
         {
-            var appform=_context.ApplicationForms.Where(app => app.ApplicationNo == appno.ToString()).FirstOrDefault();
-            appform.StatusId = 0;
-            _context.SaveChanges();
+            ApplicationForm appform;
+
+            if (AppNo_AadharNo.Length == 12)
+            {
+                appform = _context.ApplicationForms.Where(app => app.AadharNo == AppNo_AadharNo).FirstOrDefault();
+            }
+            else
+            {
+                appform = _context.ApplicationForms.Where(app => app.ApplicationNo == AppNo_AadharNo).FirstOrDefault();
+            }   
+            if (appform != null)
+            {
+
+                appform.StatusId = 2;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public string AppNo(string AadharNo)
         {
-            return _context.ApplicationForms.Where(a => a.AadharNo == AadharNo).Select(s=>s.ApplicationNo).FirstOrDefault();
+            return _context.ApplicationForms.Where(a => a.AadharNo == AadharNo && a.StatusId == 1).Select(s=>s.ApplicationNo ).FirstOrDefault();
         }
     }
 }

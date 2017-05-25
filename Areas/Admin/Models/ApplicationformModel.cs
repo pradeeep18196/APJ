@@ -31,8 +31,7 @@ namespace WebApplication.Areas.Admin.Models
         public string SubCaste{get; set;}
         public string MotherTongue{get; set;}
         public int FirstYearFee{get; set;}
-        public int SecondYearFee { get; set; }
-        public int BalanceFee{get;set;}
+        public int SecondYearFee { get; set; }        
         public string ParentOccupation{get; set;}
         public string StudentAddress{get; set;}
         public string ContactNo{get; set;}
@@ -41,6 +40,7 @@ namespace WebApplication.Areas.Admin.Models
         public string IdentificationMarks2 { get; set; }
         [Column(TypeName="Date")]
         public DateTime DateOfAdmission{get; set;}
+        public string SscPassedYear { get; set; }
         public string Photo{get;set;}
         public string StudentSignature{get; set;}
         public string ParentSignature{get; set;}

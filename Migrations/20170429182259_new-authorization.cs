@@ -1,27 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace WebApplication.Data.Migrations
+namespace Abdul_kalam_clg.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class newauthorization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    NormalizedName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
                 columns: table => new
@@ -37,24 +24,55 @@ namespace WebApplication.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Status",
+                columns: table => new
+                {
+                    StatusId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    StatusDescription = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Status", x => x.StatusId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    IPAddress = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    NormalizedUserName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(nullable: true)
+                    UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,11 +80,66 @@ namespace WebApplication.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ApplicationForms",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AadharCopy = table.Column<string>(nullable: true),
+                    AadharNo = table.Column<string>(nullable: true),
+                    ApplicationNo = table.Column<string>(nullable: true),
+                    BalanceFee = table.Column<int>(nullable: false),
+                    Caste = table.Column<string>(nullable: true),
+                    ContactNo = table.Column<string>(nullable: true),
+                    CoursePreferred = table.Column<string>(nullable: true),
+                    DOB = table.Column<DateTime>(type: "Date", nullable: false),
+                    DateOfAdmission = table.Column<DateTime>(type: "Date", nullable: false),
+                    FatherName = table.Column<string>(nullable: true),
+                    FirstYearFee = table.Column<int>(nullable: false),
+                    GradePoint = table.Column<double>(nullable: false),
+                    HallTicketNo = table.Column<int>(nullable: false),
+                    IdentificationMarks1 = table.Column<string>(nullable: true),
+                    IdentificationMarks2 = table.Column<string>(nullable: true),
+                    Language = table.Column<string>(nullable: true),
+                    Medium = table.Column<string>(nullable: true),
+                    MobileNo = table.Column<string>(nullable: true),
+                    MotherName = table.Column<string>(nullable: true),
+                    MotherTongue = table.Column<string>(nullable: true),
+                    ParentOccupation = table.Column<string>(nullable: true),
+                    ParentSignature = table.Column<string>(nullable: true),
+                    Photo = table.Column<string>(nullable: true),
+                    Religion = table.Column<string>(nullable: true),
+                    SchoolAddress = table.Column<string>(nullable: true),
+                    SchoolEducation = table.Column<string>(nullable: true),
+                    SchoolName = table.Column<string>(nullable: true),
+                    SecondYearFee = table.Column<int>(nullable: false),
+                    SscBonafide = table.Column<string>(nullable: true),
+                    SscLongMemo = table.Column<string>(nullable: true),
+                    SscShortMemo = table.Column<string>(nullable: true),
+                    SscTc = table.Column<string>(nullable: true),
+                    StatusId = table.Column<int>(nullable: false),
+                    StudentAddress = table.Column<string>(nullable: true),
+                    StudentName = table.Column<string>(nullable: true),
+                    StudentSignature = table.Column<string>(nullable: true),
+                    SubCaste = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationForms", x => x.ApplicationId);
+                    table.ForeignKey(
+                        name: "FK_ApplicationForms_Status_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Status",
+                        principalColumn: "StatusId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     RoleId = table.Column<string>(nullable: false)
@@ -87,7 +160,7 @@ namespace WebApplication.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
@@ -148,11 +221,6 @@ namespace WebApplication.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -173,9 +241,15 @@ namespace WebApplication.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_UserId",
-                table: "AspNetUserRoles",
-                column: "UserId");
+                name: "IX_ApplicationForms_StatusId",
+                table: "ApplicationForms",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -185,7 +259,8 @@ namespace WebApplication.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
-                column: "NormalizedUserName");
+                column: "NormalizedUserName",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -206,10 +281,16 @@ namespace WebApplication.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ApplicationForms");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Status");
         }
     }
 }

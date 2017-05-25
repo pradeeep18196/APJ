@@ -1,24 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Areas.Admin.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
 using WebApplication.Areas.Admin.Services;
-using Microsoft.AspNetCore.Hosting;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
 
 namespace WebApplication.Areas.Admin.Controllers
 {
-
+    [Authorize]
     [Area("Admin")]
     public class AdmissionController : Controller
     {
         private IAdmission _adm;
         private readonly IMapper _mapper;
-
+        //AutoMapperProfileConfiguration
         public AdmissionController(IAdmission adm, IMapper mapper)
         {
             _adm = adm;
@@ -53,28 +50,34 @@ namespace WebApplication.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var appform = _mapper.Map<ApplicationForm>(frm);
-                if (_adm.AppNo(frm.AadharNo) == null)
+                var Appno = _adm.AppNo(frm.AadharNo);
+                if (Appno == null)
                 {
                     _adm.AddStudent(appform);
                     _adm.SaveImages(_adm.AppNo(), frm);
-                    return RedirectToAction("Conform", frm);   //new { AadharNo = frm.AadharNo });
+                    ViewBag.AppNo = frm.ApplicationNo;
+                    return View("Conform", frm);   
                 }
                 else
-                {
-                    /////redirect to action which shows an error called THIS CANDIDAE ALREADY EXIXTS with ApplicationNo
-                    //////pending
+                {                    
+                    return RedirectToAction("DuplicateRecord", new { appNo = Appno.ToString() });
                 }
             }
             LoadDropDownsData();
-            //ViewBag.AppNo = _adm.AppNo();
-            return View("AddStudent", frm); 
+            return View("AddStudent",new { }); 
         }
-
-        public IActionResult Conform(ApplicationViewModel AppForm)
+        
+        //public IActionResult Conform(ApplicationViewModel AppForm)
+        //{
+        //    //var AppForm=(ApplicationViewModel)TempData["AppForm"];
+        //    ViewBag.AppNo = _adm.AppNo(AppForm.AadharNo);
+        //    return View(AppForm);
+        //}
+        
+        public IActionResult DuplicateRecord(string appNo)
         {
-
-            ViewBag.AppNo = _adm.AppNo(AppForm.AadharNo);
-            return View(AppForm);
+            ViewBag.Message = "THIS CANDIDAE ALREADY EXIXTS with ApplicationNo : "+appNo;
+            return View();
         }
 
         [HttpGet]
@@ -128,10 +131,11 @@ namespace WebApplication.Areas.Admin.Controllers
             }
             else
             {
-                pager = new Pager(_adm.Count(date), page.Value, pageSize);
+                var totalItems= _adm.Count(date);
+                pager = new Pager(totalItems, page.Value, pageSize);
                 SList = _adm.GetAllStudents(date, page.Value, pageSize);
                 string NewDate = "";
-                NewDate = NewDate + date.Value.Day + '-' + date.Value.Month + '-' + date.Value.Year;
+                NewDate = NewDate + date.Value.Month + '-' + date.Value.Day + '-' + date.Value.Year;
                 ViewBag.SelectedDate = NewDate;
             }
             ViewBag.Pager = pager;
@@ -143,9 +147,16 @@ namespace WebApplication.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult DeleteStudent(int appno)
+        public IActionResult Delete_Student(string appno)
         {
-
+            if(_adm.DeleteStudent(appno))
+            {
+                ViewBag.Message = "Application is Sucessfully Deleted";
+            }
+            else
+            {
+                ViewBag.Message = "This Application Dose not Exists";
+            }
             return View();
         }
     }

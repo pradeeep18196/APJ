@@ -15,7 +15,7 @@ namespace WebApplication.Areas.Admin.Services
         ApplicationForm getStudent(string AppNo);
         List<ApplicationForm> GetAllStudents(DateTime? date,int page,int pageSize);
         int Count(DateTime ?date);
-        void DeleteStudent(int appno);
+        bool DeleteStudent(string appno);
         string AppNo(string AadharNo);
     }
 

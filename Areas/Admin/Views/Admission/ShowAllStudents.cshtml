@@ -2,34 +2,76 @@
 @using System.Collections.Generic
 @model IEnumerable<ApplicationForm>
 
+<link href="~/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/js/moment.js"></script>
+<script src="~/js/bootstrap-datetimepicker.js"></script>
+<script>
+    $(function () {
+        $('.date').datetimepicker(
+            { format: 'DD-MM-YYYY' })
+    });
+</script>
+
 @using (Html.BeginForm("ShowAllStudents", "Admission"))
 {
-    <label>Date Of Admission</label>
-    <input type="date" class="form-control glyphicon glyphicon-calendar" name="date">
-    <button type="submit" name="submitbtn" id="submitbtn" value="Search" class="btn btn-info">
-        <span class="glyphicon glyphicon-search"></span> Search
-    </button>
+    <br />
+    <div class="panel panel-primary">
+        <div class="panel-heading">Delete Student</div>
+
+        <div class="panel-body">
+            <div class="table">
+                <div class="row">
+                    <div class='col-sm-12'>
+                        <br />
+                        <label>Date Of Admission</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-sm-3'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker1'>
+                                @Html.TextBox("date", null, new { @class = "form-control" })
+                                @*<input type="date" class="form-control glyphicon glyphicon-calendar" name="date">*@
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-9'>
+                        <button type="submit" name="submitbtn" id="submitbtn" value="Search" class="btn btn-info">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
-<br /><br />
+
+
+<br />
 
 <table class="table">
     <tr>
-        <th>ApplicationNo</th>
-        <th>StudentName</th>
-        <th>FatherName</th>
+        <th>Application No</th>
+        <th>Student Name</th>
+        <th>Father Name</th>
+        <th>Date Of Admission</th>
+        <th>Aadhar No</th>
     </tr>
     @foreach (var student in Model)
     {
         <tr>
-            <td><a href="Index">@student.ApplicationNo</a></td>
+            <td>@student.ApplicationNo</td>
             <td>@student.StudentName</td>
             <td>@student.FatherName</td>
+            <td>@student.DateOfAdmission</td>
+            <td>@student.AadharNo</td>
         </tr>
     }
 </table>
-
-<h1>hello @ViewBag.SelectedDate</h1>
 
 @(ViewBag.PagerCurrentPage + 2)
 
@@ -40,25 +82,53 @@
         @if (ViewBag.Pager.CurrentPage > 1)
         {
             <li>
-                <a href="ShowAllStudents">First</a>
+                
+                @if (ViewBag.SelectedDate != null)
+                {                    
+                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate">First</a>
+                }
+                else
+                {
+                    <a href="ShowAllStudents">First</a>                    
+                }
             </li>
             <li>
-                <a href="ShowAllStudents?page=@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
+                @if (ViewBag.SelectedDate != null)
+                {
+                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate&&page=@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
+                }
+                else
+                {
+                    <a href="ShowAllStudents?page=@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
+                }
             </li>
         }
 
         @for (var page = ViewBag.Pager.CurrentPage; page <= ViewBag.Pager.EndPage; page++)
         {
             <li class="@(page == ViewBag.Pager.CurrentPage ? "active" : "")">
-                <a href="ShowAllStudents? page=@page">@page</a>
-                @* date=@ViewBag.SelectedDate && *@
+                @if (ViewBag.SelectedDate != null)
+                {                   
+                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate&&page=@page">@page</a>
+                }
+                else
+                {
+                    <a href="ShowAllStudents?page=@page">@page</a>                  
+                }
             </li>
         }
 
         @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
         {
             <li>
-                <a href="ShowAllStudents?page=@(ViewBag.Pager.CurrentPage + 1)">Next</a>
+                @if (ViewBag.SelectedDate != null)
+                {
+                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate&&page=@(ViewBag.Pager.CurrentPage + 1)">Next</a>
+                }
+                else
+                {
+                    <a href="ShowAllStudents?page=@(ViewBag.Pager.CurrentPage + 1)">Next</a>
+                }              
             </li>
             <li>
                 <a href="ShowAllStudents?page=@(ViewBag.Pager.TotalPages)">Last</a>
@@ -66,39 +136,8 @@
         }
     </ul>
 }
-    @*
 
-        @if(@ViewBag.Count/3 >= 2)
-        {
-            <ul class="pagination pagination-sm">
-                    <li class="page-item">
-                        @if (ViewBag.number==1)
-                        {
-                            <a href="#" class="page-link" style="pointer-events:none;cursor:default;color:darkgray" ><<</a>
-                        }
-                        else
-                        {
-                            <a href="ShowAllStudents?page=@(ViewBag.number-1)" class="page-link"><<</a>
-                        }
-                    </li>
 
-                    @for(int i=0;i<@ViewBag.Count/3 && @ViewBag.number<@ViewBag.Count/3;i++)
-                    {
-                        <li>
-                            @Html.ActionLink(((int)@ViewBag.number+i).ToString(), "ShowAllStudents","Admission",new { page=@ViewBag.number+i})
-                        </li>
-                    }
-                    <li class="page-item">
-                    @if(ViewBag.number==ViewBag.Count/3)
-                    {
-                        <a href="#" class="page-link" style="pointer-events:none;cursor:default;color:darkgray" > >> </a>
-                    }
-                    else
-                    {
-                        <a class="page-link" href="ShowAllStudents?page=@(ViewBag.number+1)">>></a>
-                    }
-                    </li>
-            </ul>
-        }
-        </br>
-    *@		
+
+
+
