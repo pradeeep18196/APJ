@@ -12,6 +12,7 @@ namespace WebApplication.Areas.Admin.Models
         [Key]
         public int ApplicationId{ get; set; }
         public string ApplicationNo{get;set;}
+        public string Surname { get; set; }
         public string StudentName{get; set;}
         public string FatherName{get; set;}
         public string MotherName{get;set;}
@@ -51,5 +52,6 @@ namespace WebApplication.Areas.Admin.Models
         public string AadharCopy { set; get; }
         public int StatusId { get; set; }
         public Status Status { get; set; }
+        public string Description { set; get; }
     }  
 }

@@ -1,0 +1,241 @@
+﻿@model ApplicationForm
+
+<div class="ApplicationDiv" @(int.Parse(ViewBag.option) == 1 ? "style=visibility:visible" : "style=visibility:hidden")">
+<table width="100%">
+
+<tr>
+
+<td>
+
+<img width="150" height="150" src="~/images/APJ_LOGO.jpg" />
+
+</td>
+
+<td style="white-space:inherit">
+
+<h1 style="text-align:center;color:red;font-size: 250%">APJ ABDUL KALAM <br />JUNIOR COLLEGE</h1>
+
+<h4 style="text-align:center">(Recog. by Govt. of T.S., affiliated to BIE)<br />BESIDE S.V.MODEL HIGH SCHOOL, MARKET ROAD, <br />SHAPUR NAGAR, IDA JEEDIMETLA,<br />HYDERABAD-055. PH : 040-6999 8859.<br /> Email : apjabdulkalamjrclg@gmail.com <br /> COLLEGE CODE:59343</h4>
+            </td>
+            <td>
+                @*<img width="150" height="150" src="~/images/APJ_LOGO.jpg" />*@
+                <img height="150" width="150" src="~/images/Photos/@Model.Photo" />
+            </td>
+        </tr>
+    </table>
+    <h1 style="text-align:center"><u>APPLICATION FORM</u></h1>
+    <table width="100%">
+        <tr>
+            <td><h3>Application No</h3></td>
+            <td><h3>:&emsp;&emsp;&emsp; </h3></td>
+            <td colspan="1.5"><h3>@Model.ApplicationNo</h3></td>
+        </tr>
+        <tr>
+            <td><h3>Date</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.DateOfAdmission</h3></td>
+        </tr>
+        <tr>
+            <td><h3>1. Name of The Student</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.StudentName</h3></td>
+        </tr>
+        <tr>
+            <td><h3>2. Father's/Guardian's Name </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.FatherName</h3></td>
+        </tr>
+        <tr>
+            <td><h3>3. Mothers Name</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.MotherName</h3></td>
+        </tr>
+        <tr>
+            <td>
+                <h3>4. Aadhar No  </h3>
+            </td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.AadharNo</h3></td>
+        </tr>
+        <tr><td><h3>5. 10th Pass Type </h3></td><td><h3>:</h3></td><td><h3>@Model.SchoolEducation</h3></td></tr>
+        <tr>
+            <td><h3>6. Hall Ticket No </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.HallTicketNo</h3></td>
+        </tr>
+        <tr>
+            <td><h3>7. GPA / GRADE / Obtained</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.GradePoint</h3></td>
+        </tr>
+        <tr>
+            <td><h3>9. Date of Birth as per SSC </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.DOB</h3></td>
+        </tr>
+        <tr>
+            <td><h3>10. Identification Marks 1. </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.IdentificationMarks1</h3></td>
+        </tr>
+        <tr>
+            <td><h3>11. Identification Marks 2. </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.IdentificationMarks2</h3></td>
+        </tr>
+        <tr>
+            <td><h3>12. Name of the School</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.SchoolName</h3></td>
+        </tr>
+        <tr>
+            <td><h3>13. School Address</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.SchoolAddress</h3></td>
+        </tr>
+        <tr>
+            <td><h3>14. Course Preferred </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.CoursePreferred</h3></td>
+        </tr>
+        <tr>
+            <td><h3>15. Mediun of Instruction</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.Medium</h3></td>
+        </tr>
+        <tr>
+            <td><h3>16. Language  </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.Language</h3></td>
+        </tr>
+        <tr>
+            <td><h3>17. Religion  </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.Religion</h3></td>
+        </tr>
+        <tr>
+            <td><h3>18. Caste  </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.Caste</h3></td>
+        </tr>
+        <tr>
+            <td><h3>19. Sub Caste </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.SubCaste</h3></td>
+        </tr>
+        <tr>
+            <td><h3>20. Mother Toungue</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.MotherName</h3></td>
+        </tr>
+        <tr>
+            <td><h3>21. FirstYearFee  </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.FirstYearFee</h3></td>
+        </tr>
+        <tr>
+            <td><h3>22. SecondYearFee </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.SecondYearFee</h3></td>
+        </tr>
+        <tr>
+            <td><h3>23. ParentOccupation </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.ParentOccupation</h3></td>
+        </tr>
+        <tr>
+            <td><h3>24. Address For Correspondence  </h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.StudentAddress</h3></td>
+        </tr>
+        <tr>
+            <td><h3>25. Contact Number</h3></td>
+            <td><h3>:</h3></td>
+            <td><h3>@Model.ContactNo</h3></td>
+        </tr>
+    </table>
+</div>
+<div class="Acknowledgement" @(int.Parse(ViewBag.option) == 1 ? "style=visibility visible" : "style=visibility hidden")">
+    <div class="AcknowledgementDiv">
+        <table width="100%">
+            <tr>
+                <td>
+                    <img width="150" height="150" src="~/images/APJ_LOGO.jpg" />
+                </td>
+                <td style="white-space:inherit">
+                    <h1 style="text-align:center;color:red;font-size: 250%">APJ ABDUL KALAM <br />JUNIOR COLLEGE</h1>
+                    <h4 style="text-align:center">(Recog. by Govt. of T.S., affiliated to BIE)<br />BESIDE S.V.MODEL HIGH SCHOOL, MARKET ROAD, SHAPUR NAGAR,<br /> IDA JEEDIMETLA, HYDERABAD-055. PH : 040-6999 8859.<br /> Email : apjabdulkalamjrclg@gmail.com, COLLEGE CODE:59343</h4>
+                </td>
+
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td><h3>Date</h3></td>
+                <td><h3>:&emsp;&emsp;&emsp;</h3></td>
+                <td><h3>@Model.DateOfAdmission</h3></td>
+            </tr>
+            <tr>
+                <td><h3>Student Name</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3>@Model.StudentName</h3></td>
+            </tr>
+            <tr>
+                <td><h3>Father Name</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3>@Model.FatherName</h3></td>
+            </tr>
+            <tr>
+                <td><h3>Course Details</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3>@Model.CoursePreferred</h3></td>
+            </tr>
+            <tr>
+                <td><h3>First Year Fee</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3>@Model.FirstYearFee</h3></td>
+            </tr>
+            <tr>
+                <td><h3>Second Year Fee</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3>@Model.SecondYearFee</h3></td>
+            </tr>
+            @*<tr>
+                    <td><h3>Amount Paid </h3></td>
+                    <td><h3>:</h3></td>
+                    <td><h3></h3></td>
+                </tr>
+                <tr>
+                    <td><h3>Amount Paid In Words </h3></td>
+                    <td><h3>:</h3></td>
+                    <td><h3></h3></td>
+                </tr>
+            *@
+            <tr>
+                <td><h3>Emp.Code </h3></td>
+                <td><h3>:</h3></td>
+                <td><h3></h3></td>
+            </tr>
+            <tr>
+                <td><h3>Mobile No</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3>@Model.MobileNo</h3></td>
+            </tr>
+            <tr>
+                <td><h3>Student Signature</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3></h3></td>
+            </tr>
+            <tr>
+                <td><h3>Parent Signature</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3></h3></td>
+            </tr>
+            <tr>
+                <td><h3>Emp.Signature</h3></td>
+                <td><h3>:</h3></td>
+                <td><h3></h3></td>
+            </tr>
+        </table>
+    </div>
+</div>

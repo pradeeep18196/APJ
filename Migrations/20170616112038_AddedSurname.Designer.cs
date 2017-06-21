@@ -8,8 +8,8 @@ using WebApplication.Data;
 namespace Abdul_kalam_clg.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170429182259_new-authorization")]
-    partial class newauthorization
+    [Migration("20170616112038_AddedSurname")]
+    partial class AddedSurname
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,8 +112,6 @@ namespace Abdul_kalam_clg.Migrations
 
                     b.Property<string>("ApplicationNo");
 
-                    b.Property<int>("BalanceFee");
-
                     b.Property<string>("Caste");
 
                     b.Property<string>("ContactNo");
@@ -125,6 +123,8 @@ namespace Abdul_kalam_clg.Migrations
 
                     b.Property<DateTime>("DateOfAdmission")
                         .HasColumnType("Date");
+
+                    b.Property<string>("Description");
 
                     b.Property<string>("FatherName");
 
@@ -168,6 +168,8 @@ namespace Abdul_kalam_clg.Migrations
 
                     b.Property<string>("SscLongMemo");
 
+                    b.Property<string>("SscPassedYear");
+
                     b.Property<string>("SscShortMemo");
 
                     b.Property<string>("SscTc");
@@ -181,6 +183,8 @@ namespace Abdul_kalam_clg.Migrations
                     b.Property<string>("StudentSignature");
 
                     b.Property<string>("SubCaste");
+
+                    b.Property<string>("Surname");
 
                     b.HasKey("ApplicationId");
 

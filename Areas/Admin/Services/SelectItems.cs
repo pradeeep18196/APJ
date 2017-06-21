@@ -42,25 +42,43 @@ namespace WebApplication.Areas.Admin.Models
             List<SelectListItem> CoursesList = new List<SelectListItem>();
             CoursesList.Add(new SelectListItem
             {
+                Text = "M.P.C REGULAR",
+                Value = "M.P.C REGULAR"
+            });
+            CoursesList.Add(new SelectListItem
+            {
                 Text = "M.P.C + AIEEE",
                 Value = "M.P.C + AIEEE"
             });
             CoursesList.Add(new SelectListItem
             {
                 Text = "M.P.C + EAMCET",
-                Value = "M.P.C + EAMCET",
-
+                Value = "M.P.C + EAMCET"
             });
             CoursesList.Add(new SelectListItem
             {
-                Text = "Bi.P.C + EAMCET",
-                Value = "Bi.P.C + EAMCET"
+                Text = "Bi.P.C REGULAR",
+                Value = "Bi.P.C REGULAR"
+            });
+            CoursesList.Add(new SelectListItem
+            {
+                Text = "Bi.P.C + NEET",
+                Value = "Bi.P.C + NEET"
+            });
+            CoursesList.Add(new SelectListItem
+            {
+                Text = "M.E.C REGULAR",
+                Value = "M.E.C REGULAR"
             });
             CoursesList.Add(new SelectListItem
             {
                 Text = "M.E.C + CA/CPT",
-                Value = "M.E.C + CA/CPT",
-
+                Value = "M.E.C + CA/CPT"
+            });
+            CoursesList.Add(new SelectListItem
+            {
+                Text = "C.E.C REGULAR",
+                Value = "C.E.C REGULAR"
             });
             CoursesList.Add(new SelectListItem
             {

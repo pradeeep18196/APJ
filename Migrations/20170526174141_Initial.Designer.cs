@@ -8,9 +8,10 @@ using WebApplication.Data;
 namespace Abdul_kalam_clg.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170526174141_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -182,8 +183,6 @@ namespace Abdul_kalam_clg.Migrations
                     b.Property<string>("StudentSignature");
 
                     b.Property<string>("SubCaste");
-
-                    b.Property<string>("Surname");
 
                     b.HasKey("ApplicationId");
 

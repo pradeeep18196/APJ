@@ -1,30 +1,222 @@
-﻿<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <div class="top-buffer"></div>
-        <div class="panel panel-danger">
-            <div class="panel-heading">Access Denied</div>
-            <div class="panel-body">
-                <section>
-                    <h1 class="text-danger">401 ! Access Denied</h1>
-                    <br />
-                    <a href="javascript:void(0)" onClick="backAway()" class="btn btn-success">Back</a>
-                </section>
+﻿@*<div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="~/images/parineeti-chopra.jpg" alt="Los Angeles">
+            </div>
+
+            <div class="item">
+                <img src="~/images/parineeti-chopra-hd.jpg" alt="Chicago">
+            </div>
+
+            <div class="item">
+                <img src="~/images/priyanka-chopra.jpg" alt="New York">
             </div>
         </div>
-    </div>
-    <div class="col-md-3"></div>
-</div>
 
-@section scripts
-{
-    <script>
-        function backAway() {
-            if (history.length === 1) {
-                window.location = "http://localhost:50841/"
-            } else {
-                history.back();
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>*@
+<script>
+    'use strict';
+
+    var carousel = function carousel(options) {
+
+        var _carousel = {
+
+            paused: false,
+
+            stopped: false,
+
+            options: {
+                speed: 3000,
+                acceleration: 5,
+                reverse: false,
+                selector: '.c-carousel',
+                slidesSelector: '.c-carousel__slides',
+                leftArrowSelector: '.c-carousel__arrow--left',
+                rightArrowSelector: '.c-carousel__arrow--right'
+            },
+
+            init: function init() {
+                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                // Copy options to this.options
+                for (var prop in options) {
+                    if (!options.hasOwnProperty(prop)) break;
+                    this.options[prop] = options[prop];
+                }
+
+                // Cache nodes
+                var carousel = document.querySelector(options.selector || this.options.selector);
+                var slides = this._slides = carousel.querySelector(this.options.slidesSelector);
+                this._leftArrow = carousel.querySelector(this.options.leftArrowSelector);
+                this._rightArrow = carousel.querySelector(this.options.rightArrowSelector);
+
+                // Multiply speed value by the number of slides
+                this.options.speed = this.options.speed * slides.children.length;
+
+                // Set slides container width
+                this.width = slides.offsetWidth;
+
+                // Repeat elements
+                slides.innerHTML = slides.innerHTML + slides.innerHTML + slides.innerHTML;
+
+                this._registerEvents();
+                this._animate();
+            },
+            _registerEvents: function _registerEvents() {
+                var _this = this;
+
+                var speed = this.options.speed;
+                var reverse = this.options.reverse;
+
+                this._rightArrow.addEventListener('mouseover', function () {
+                    _this.options.speed = speed / _this.options.acceleration;
+                    _this.options.reverse = false;
+                });
+                this._rightArrow.addEventListener('mouseleave', function () {
+                    _this.options.speed = speed;
+                    _this.options.reverse = reverse;
+                });
+                this._leftArrow.addEventListener('mouseover', function () {
+                    _this.options.speed = speed / _this.options.acceleration;
+                    _this.options.reverse = true;
+                });
+                this._leftArrow.addEventListener('mouseleave', function () {
+                    _this.options.speed = speed;
+                    _this.options.reverse = reverse;
+                });
+
+                // Pause when cursor is over carousel
+                this._slides.addEventListener('mouseover', this.pause.bind(this));
+                this._slides.addEventListener('mouseleave', this.start.bind(this));
+
+                // Pause when cursor is over carousel
+                window.addEventListener('resize', function () {
+                    _this.width = _this._slides.offsetWidth;
+                });
+            },
+            pause: function pause() {
+                this.paused = true;
+            },
+            start: function start() {
+                this.paused = false;
+            },
+            stop: function stop() {
+                this.stopped = true;
+            },
+            _animate: function _animate() {
+                var _this2 = this;
+
+                var slides = this._slides;
+                var oneThird = slides.lastElementChild.getBoundingClientRect().right / 3;
+                var framesCount = 0;
+                var step = 0;
+                var posX = 0;
+
+                var animate = function animate() {
+                    if (!_this2.paused) {
+
+                        framesCount = _this2.options.speed * 60 / 1000;
+                        step = oneThird / framesCount;
+
+                        posX += _this2.options.reverse ? step : -step;
+
+                        slides.style.transform = 'translateX(' + posX + 'px)';
+
+                        if (_this2.options.reverse) {
+                            if (posX >= _this2.width - oneThird) {
+                                posX = _this2.width - oneThird * 2;
+                            }
+                        } else {
+                            if (Math.abs(posX) >= oneThird * 2) {
+                                posX = -oneThird;
+                            }
+                        }
+                    }
+                    !_this2.stopped && requestAnimationFrame(animate);
+                };
+                animate();
             }
-        }
-    </script>
-}
+        };
+
+        _carousel.init(options);
+
+        return _carousel;
+    };
+
+    window.onload = function () {
+        return carousel({
+            selector: '.c-carousel'
+        });
+    };
+</script>
+<style>
+    body {
+        margin: 0;
+        background-color: white;
+    }
+
+    img {
+        display: block;
+        height: 400px;
+        margin-right: 10px;
+    }
+
+    .c-carousel {
+        width: 100%;
+        position: relative;
+        margin-top: 30px;
+    }
+
+    .c-carousel__arrow {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        z-index: 1;
+        -webkit-transform: translateY(-50%) rotate(45deg);
+        transform: translateY(-50%) rotate(45deg);
+        background-color: white;
+    }
+
+    .c-carousel__arrow--left {
+        left: 15px;
+    }
+
+    .c-carousel__arrow--right {
+        right: 15px;
+    }
+
+    .c-carousel__slides {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        will-change: transform;
+    }
+</style>
+<div class="c-carousel">
+    <div class="c-carousel__arrow c-carousel__arrow--left"></div>
+    <div class="c-carousel__arrow c-carousel__arrow--right"></div>
+    <ul class="c-carousel__slides">
+        <li><img src="~/images/parineeti-chopra.jpg" /></li>
+        <li><img src="~/images/parineeti-chopra-hd.jpg" /></li>
+        <li><img src="~/images/priyanka-chopra.jpg" /></li>
+    </ul>
+</div>

@@ -1,11 +1,10 @@
-﻿@model ApplicationViewModel
+﻿@model ApplicationForm
 <script type="text/javascript">
     $(window).on('load', function () {
         $('#exampleModalLong').modal('show');
     });
 
     function printApplication() {
-        console.log($("#ApplicationDiv").html());
         var win = window.open("", "blank", 'width=0,height=0');
         win.document.open();
         win.document.write("<html><body onload='window.print()'>" + $(".ApplicationDiv").html() + "</body></html>");
@@ -26,19 +25,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="table">
-                        <div class="row">
-                            <div class="col-lg-11">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                            </div>
-                            <div class="col-lg-1">
-                                <a href="~/Admin/Admission" class="glyphicon glyphicon-remove"></a>
-                            </div>
-                        </div>
-                    </div>                                        
+
+                    <div class="col-lg-11">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    </div>
+                    <div class="col-lg-1">
+                        <a href="~/Admin/Admission" class="glyphicon glyphicon-remove"></a>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <h3>Application is Sucessfully registered with @ViewBag.AppNo </h3>
+                    <h3>@ViewBag.msg</h3>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="printApplication()" data-dismiss="modal">Print Application Form</button>
@@ -59,8 +55,8 @@
                 <h4 style="text-align:center">(Recog. by Govt. of T.S., affiliated to BIE)<br />BESIDE S.V.MODEL HIGH SCHOOL, MARKET ROAD, <br />SHAPUR NAGAR, IDA JEEDIMETLA,<br />HYDERABAD-055. PH : 040-6999 8859.<br /> Email : apjabdulkalamjrclg@gmail.com <br /> COLLEGE CODE:59343</h4>
             </td>
             <td>
-                <img width="150" height="150" src="~/images/APJ_LOGO.jpg" />
-                @*<img height="150" width="150" src="@string.Format("/images/Photos/{0}",Model.Photo)" />*@
+                @*<img width="150" height="150" src="~/images/APJ_LOGO.jpg" />*@
+                @*<img height="150" width="150" src="~/images/Photos/@Model.Photo" />*@
             </td>
         </tr>
     </table>
@@ -69,7 +65,7 @@
         <tr>
             <td><h2>Application No</h2></td>
             <td><h2>:&emsp;&emsp;&emsp; </h2></td>
-            <td colspan="1.5"><h2>@ViewBag.AppNo</h2></td>
+            <td colspan="1.5"><h2>@Model.ApplicationNo</h2></td>
         </tr>
         <tr>
             <td><h2>Date</h2></td>
@@ -196,10 +192,7 @@
         </tr>
     </table>
 </div>
-
-
-
-<div class="Acknowledgement">
+<div class="Acknowledgement" style="visibility: hidden">
     <div class="AcknowledgementDiv">
         <table width="100%">
             <tr>

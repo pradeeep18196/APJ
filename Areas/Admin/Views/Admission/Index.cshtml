@@ -1,9 +1,290 @@
 @{
-     ViewData["Title"]="Index";
+    ViewData["Title"] = "Index";
 }
 <br>
+@*
+    <style>
+        .search {
+            border-radius: 1px #ff00;
+            background: #fff;
+            border: -8px solid #fff;
+            font-size: 18px;
+            line-height: 2px;
+            width: 450px;
+            height: 40px;
+        }
 
-<a href="/Admin/Admission/AddStudent" class="btn btn-primary col-md-3">Add Student</a><br><br>
-<a href="/Admin/Admission/EditStudent" class="btn btn-primary col-md-3">Edit Student</a><br><br>
-<a href="/Admin/Admission/ShowAllStudents" class="btn btn-primary col-md-3">Show All Student</a><br><br>
-<a href="/Admin/Admission/DeleteStudent" class="btn btn-primary col-md-3">Delete Student</a><br><br>
+        .button {
+            position: relative;
+            line-height: 2px;
+            height: 45px;
+            left: -8px;
+            border: 2px solid #fff;
+            background-color: #008299;
+            color: #fff;
+        }
+
+        .navigator span {
+            color: #888;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+
+        .navigator li {
+            border: 1px solid #888;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-left: 30px;
+            margin-top: 10px;
+            padding: 5px 5px;
+            width: 47%;
+            text-align: center;
+        }
+
+
+
+
+        .navigator img {
+            float: left;
+            padding-left: 10px;
+        }
+
+
+        .btn-info {
+            color: #008299;
+            background-color: #fff;
+            border-color: #fff;
+        }
+
+
+        a{
+            font-size: 20px;
+        }
+
+        .accordion-topics .glyphicon {
+            font-size: 25px;
+        }
+    </style>
+
+    @*<a href="/Admin/Admission/AddStudent" class="btn btn-primary col-md-3">Add Admission</a><br><br>
+        <a href="/Admin/Admission/EditStudent" class="btn btn-primary col-md-3">Edit Admission</a><br><br>
+        <a href="/Admin/Admission/ShowAllStudents" class="btn btn-primary col-md-3">Show All Admissions</a><br><br>
+        <a href="/Admin/Admission/DeleteStudent" class="btn btn-primary col-md-3">Delete Admission</a><br><br>*@
+@*
+        <div class="container">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo1" span style="font-weight:bold; font-size:20px;">Admissions</button>
+            <div id="demo1" class="collapse in col-lg-offset-1">
+                <a href="/Admin/Admission/AddStudent" style="color:#008299">Add Admission</a><br><br>
+                <a href="/Admin/Admission/EditStudent" style="color:#008299">Edit Admission</a><br><br>
+                <a href="/Admin/Admission/ShowAllStudents" style="color:#008299">Show All Admissions</a><br><br>
+                <a href="/Admin/Admission/DeleteStudent" style="color:#008299">Delete Admission</a>
+            </div>
+        </div>
+        <br />
+        <div class="container">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2" span style="font-weight:bold; font-size:20px;">Notification</button>
+            <div id="demo2" class="collapse in col-lg-offset-1">
+                <a href="/Admin/Notification/Index" style="color:#008299">Send Notification</a><br><br>
+            </div>
+        </div>
+
+    ////////////////////////////////
+
+    <div id="slider" style="right:-342px;">
+        <div id="sidebar" onclick="open_panel()">
+            <img src="~/images/abc.png">
+        </div>
+        <div id="header">
+            @using (Html.BeginForm("SendNotification", "Notification"))
+            {
+                <br /><br /><br />
+                <select id="selection" name="selection" onchange="hideAppNo(this.value)">
+                    <option value="" disabled selected style="display: none;">Select your option</option>
+                    <option value="1">Send To Individual Student</option>
+                    <option value="2">Send By Group</option>
+                    <option value="3">Send To AllStudents</option>
+                </select><br />
+                <div id="appno" style="display:none">
+                    <input placeholder="Application/Aadhar No" type="text" name="appno">
+                </div>
+                    <div id="Groups" style="display:none">
+                        <br />
+                        <label>Groups</label> <br />
+                        <input type="checkbox" name="groups" value="MPC">MPC<br>
+                        <input type="checkbox" name="groups" value="Bipc">Bipc<br>
+                        <input type="checkbox" name="groups" value="MEC">MEC<br>
+                        <input type="checkbox" name="groups" value="CEC">CEC<br>
+                    </div>
+                    <div id="subject" style="display:none">
+                        <textarea type="text" placeholder="Message" id="description" name="description"></textarea><br />
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-info">
+                            <span class="glyphicon glyphicon-se"></span> Send Notification
+                        </button>
+                    </div>
+            }
+        </div>
+    </div>
+
+    <script>
+        /*
+    ------------------------------------------------------------
+    Function to activate form button to open the slider.
+    ------------------------------------------------------------
+    */
+        function open_panel() {
+            slideIt();
+            var a = document.getElementById("sidebar");
+            a.setAttribute("id", "sidebar1");
+            a.setAttribute("onclick", "close_panel()");
+        }
+        /*
+        ------------------------------------------------------------
+        Function to slide the sidebar form (open form)
+        ------------------------------------------------------------
+        */
+        function slideIt() {
+            var slidingDiv = document.getElementById("slider");
+            var stopPosition = 0;
+            if (parseInt(slidingDiv.style.right) < stopPosition) {
+                slidingDiv.style.right = parseInt(slidingDiv.style.right) + 2 + "px";
+                setTimeout(slideIt, 1);
+            }
+        }
+        /*
+        ------------------------------------------------------------
+        Function to activate form button to close the slider.
+        ------------------------------------------------------------
+        */
+        function close_panel() {
+            slideIn();
+            a = document.getElementById("sidebar1");
+            a.setAttribute("id", "sidebar");
+            a.setAttribute("onclick", "open_panel()");
+        }
+        /*
+        ------------------------------------------------------------
+        Function to slide the sidebar form (slide in form)
+        ------------------------------------------------------------
+        */
+        function slideIn() {
+            var slidingDiv = document.getElementById("slider");
+            var stopPosition = -342;
+            if (parseInt(slidingDiv.style.right) > stopPosition) {
+                slidingDiv.style.right = parseInt(slidingDiv.style.right) - 2 + "px";
+                setTimeout(slideIn, 1);
+            }
+        }
+        /////
+
+        function hideAppNo(value) {
+            if (value == "1") {
+                document.getElementById("appno").style.display = "block";
+                document.getElementById("subject").style.display = "block";
+                document.getElementById("Groups").style.display = "none";
+            }
+            else if (value == "2") {
+                document.getElementById("appno").style.display = "none";
+                document.getElementById("subject").style.display = "block";
+                document.getElementById("Groups").style.display = "block";
+            }
+            else if (value == "3") {
+                document.getElementById("appno").style.display = "none";
+                document.getElementById("subject").style.display = "block";
+                document.getElementById("Groups").style.display = "none";
+            }
+        }
+    </script>
+    <style>
+
+        #slider {
+            width: 500px;
+            top: 150px;
+            position: absolute;
+        }
+
+        #header {
+            width: 333px;
+            height: 520px;
+            position: absolute;
+            right: 0;
+            border: 1px solid #d8d8d8;
+            margin-left: 40px;
+            padding: 20px 40px;
+            border-radius: 3px;
+            box-shadow: 0 0 8px gray;
+        }
+
+        #sidebar {
+            position: absolute;
+            top: 100px;
+            left: 113px;
+            box-shadow: 0 0 8px gray;
+        }
+
+        #sidebar1 {
+            position: absolute;
+            top: 100px;
+            left: 113px;
+            box-shadow: 0 0 8px gray;
+        }
+
+        h3 {
+            font-family: 'Roboto Slab',serif;
+        }
+
+        input[type=text] {
+            margin-top: 10px;
+            padding: 6px;
+            width: 100%;
+            font-size: 15px;
+            border-radius: 2px;
+            border: 3px solid #98d0f1;
+        }
+
+        h4 {
+            font-size: 15px;
+        }
+
+        div#title {
+            position: absolute;
+            top: 300px;
+            left: 650px;
+        }
+
+        select {
+            padding: 6px;
+            width: 100%;
+            font-size: 15px;
+            border-radius: 2px;
+            border: 3px solid #98d0f1;
+        }
+
+        textarea {
+            padding: 6px;
+            font-size: 15px;
+            border-radius: 2px;
+            border: 3px solid #98d0f1;
+            margin-top: 10px;
+            height: 80px;
+            width: 100%;
+        }
+
+        button {
+            background: #2bc1f2;
+            border: none;
+            color: #fff;
+            width: 100%;
+            font-size: 22px;
+            font-weight: bolder;
+            padding: 8px 0;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+    </style>
+
+*@

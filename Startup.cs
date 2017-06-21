@@ -54,6 +54,7 @@ namespace WebApplication
             services.AddMvc();
             // Add application services.
             services.AddSingleton<IAdmission,Admission>();
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
@@ -81,13 +82,13 @@ namespace WebApplication
             {
                  routes.MapRoute(
                     name: "areaRoute",
-                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    template: "{area:exists}/{controller=Admission}/{action=Index}/{id?}");
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            //ApjContext.Database.Migrate();
-            ApjContext.Database.EnsureCreated(); 
+            ApjContext.Database.Migrate();
+            //ApjContext.Database.EnsureCreated(); 
         }
     }
 }

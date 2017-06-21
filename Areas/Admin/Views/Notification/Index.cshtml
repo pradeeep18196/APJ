@@ -1,0 +1,123 @@
+﻿<script>
+    function hideAppNo(value) {
+        if (value == "1") {
+            document.getElementById("appno").style.display = "block";
+            document.getElementById("subject").style.display = "block";
+            document.getElementById("Groups").style.display = "none";
+        }
+        else if (value == "2") {
+            document.getElementById("appno").style.display = "none";
+            document.getElementById("subject").style.display = "block";
+            document.getElementById("Groups").style.display = "block";
+        }
+        else if (value == "3") {
+            document.getElementById("appno").style.display = "none";
+            document.getElementById("subject").style.display = "block";
+            document.getElementById("Groups").style.display = "none";
+        }
+
+    }
+    $(function () {
+        $('.list-group').hide();
+        $('.mini-submenu').show();
+        $('#slide-submenu').on('click', function () {
+            $(this).closest('.list-group').fadeOut('slide', function () {
+                $('.mini-submenu').fadeIn();
+            });
+
+        });
+
+        $('.mini-submenu').on('click', function () {
+            $(this).next('.list-group').toggle('slide');
+            $('.mini-submenu').hide();
+        })
+    });
+</script>
+<style>
+    .mini-submenu {
+        display: none;
+        background-color: rgba(0, 0, 0, 0);
+        border: 1px solid rgba(0, 0, 0, 0.9);
+        border-radius: 4px;
+        padding: 9px;
+        width: 42px;
+    }
+
+        .mini-submenu:hover {
+            cursor: pointer;
+        }
+
+        .mini-submenu .icon-bar {
+            border-radius: 1px;
+            display: block;
+            height: 2px;
+            width: 22px;
+            margin-top: 3px;
+            background-color: #000;
+        }
+
+    .pull-right {
+        float: left;
+        margin-left: .3em;
+    }
+
+    .fa {
+        display: inline-block;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .fa-times:before {
+        content: "\f00d";
+    }
+</style>
+
+@using (Html.BeginForm("SendNotification", "Notification"))
+{
+    <br />
+    <div class="container" style="position:fixed;top:15%;height:100%">
+        <div class="mini-submenu pull-right">
+            <span class="glyphicon glyphicon-send"></span>
+        </div>
+        <div class="list-group">
+            <span href="#" class="list-group-item active">
+                Send Notification
+                <span class="pull-right glyphicon glyphicon-remove" id="slide-submenu"></span>
+            </span>
+            <div class="list-group-item">
+                <select id="selection" name="selection" onchange="hideAppNo(this.value)" class="form-control">
+                    <option value="" disabled selected style="display: none;">Select your option</option>
+                    <option value="1">Send To Individual Student</option>
+                    <option value="2">Send By Group</option>
+                    <option value="3">Send To AllStudents</option>
+                </select>
+            </div>
+            <div class="list-group-item" id="appno" style="display:none">
+                <label>Application No / Aadhar No</label>
+                <input type="text" class="form-control" name="appno">
+            </div>
+            <div class="list-group-item" id="Groups" style="display:none">
+                <label>Groups</label> <br />
+                <input type="checkbox" name="groups" value="MPC">MPC<br>
+                <input type="checkbox" name="groups" value="Bipc">Bipc<br>
+                <input type="checkbox" name="groups" value="MEC">MEC<br>
+                <input type="checkbox" name="groups" value="CEC">CEC<br>
+            </div>
+            <div class="list-group-item" id="subject" style="display:none">
+                <label>Subject</label>
+                <textarea type="text" class="form-control" id="description" name="description"></textarea><br />
+            </div>
+            <div class="list-group-item">
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-se"></span> Send Notification
+                </button>
+            </div>
+        </div>
+    </div>
+
+}
+
+

@@ -8,136 +8,217 @@
 <script>
     $(function () {
         $('.date').datetimepicker(
-            { format: 'DD-MM-YYYY' })
+            { format: 'YYYY-MM-DD' })
     });
-</script>
 
-@using (Html.BeginForm("ShowAllStudents", "Admission"))
+    function printApplication(appno, opt) {
+        var win = window.open('PrintAdmission?appNo=' + appno + '&Option=' + opt, null, 'width=0,height=0');
+        win.onload = function () {
+            win.print();
+        }
+    }
+
+    //$(document).ready(function () {
+    //    $('[data-toggle="popover"]').popover({
+    //        placement: 'right',
+    //        trigger: 'hover',
+    //        html: true,
+    //        title: '<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(1212162612,1)" data-dismiss="modal">Admission</button>',
+    //        content: '<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(1212162612,1)" data-dismiss="modal">Admission</button>'
+    //    });
+    //});
+
+
+    var originalLeave = $.fn.popover.Constructor.prototype.leave;
+    $.fn.popover.Constructor.prototype.leave = function (obj) {
+        var self = obj instanceof this.constructor ?
+            obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
+        var container, timeout;
+
+        originalLeave.call(this, obj);
+
+        if (obj.currentTarget) {
+            container = $(obj.currentTarget).siblings('.popover')
+            timeout = self.timeout;
+            container.one('mouseenter', function () {
+                //We entered the actual popover – call off the dogs
+                clearTimeout(timeout);
+                //Let's monitor popover content instead
+                container.one('mouseleave', function () {
+                    $.fn.popover.Constructor.prototype.leave.call(self, self);
+                });
+            })
+        }
+    };
+
+    $('body').popover({ selector: '[data-popover]', trigger: 'click hover', delay: { show: 50, hide: 400 } });
+
+
+    function ChangeSelection() {
+        $("#Form").submit();
+    }
+
+    function ChangePage(page) {
+        $("#page").val(page);
+        $("#Form").submit();
+    }
+    $(document).ready(function () {
+        var x = $("#SelectedGroup").val();
+        if (x != "") {
+            $("#Group").val(x);
+        }
+        $("#pageSize").val($("#SelectedPageSize").val());
+
+    })
+
+</script>
+<style>
+    th, td {
+        text-align: center;
+    }
+</style>
+
+@using (Html.BeginForm("ShowAllStudents", "Admission", FormMethod.Get, new { Id = "Form" }))
 {
     <br />
     <div class="panel panel-primary">
-        <div class="panel-heading">Delete Student</div>
+        <div class="panel-heading" style="font-size:17px">Show All Student<a href="http://localhost:2473/Admin/Admission" class="col-lg-offset-10 btn btn-sm btn-default">Back</a></div>
 
         <div class="panel-body">
-            <div class="table">
-                <div class="row">
-                    <div class='col-sm-12'>
-                        <br />
-                        <label>Date Of Admission</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class='col-sm-3'>
-                        <div class="form-group">
-                            <div class='input-group date' id='datetimepicker1'>
-                                @Html.TextBox("date", null, new { @class = "form-control" })
-                                @*<input type="date" class="form-control glyphicon glyphicon-calendar" name="date">*@
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+            <br />
+            <div class="container-fluid">
+                <table class="table table-striped table-responsive">
+                    <tr style="background-color:#337ab7">
+                        <th>Application No</th>
+                        <th width="250px">
+                            Student Name
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-8 col-lg-offset-2">
+                                    <div id="custom-search-input">
+                                        <div class="input-group col-md-12">
+                                            <input type="text" name="studentName" class="form-control" value="@ViewBag.studentName" onchange="ChangeSelection()" />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-info" type="button">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class='col-sm-9'>
-                        <button type="submit" name="submitbtn" id="submitbtn" value="Search" class="btn btn-info">
-                            <span class="glyphicon glyphicon-search"></span> Search
-                        </button>
-                    </div>
+                        </th>
+                        <th>Father Name</th>
+                        <th>
+                            Group<br />
+                            <select class="dropdown form-control" onchange="ChangeSelection()" id="Group" name="Group" data-style="btn-info">
+                                @*<option value="" disabled selected style="display: none;">Select</option>*@
+                                <option>All</option>
+                                <option>M.P.C</option>
+                                <option>Bi.P.C</option>
+                                <option>M.E.C</option>
+                                <option>C.E.C</option>
+                            </select>
+                        </th>
+
+                        <th width="300px">
+                            <div class="form-group">
+                                Date Of Admission
+                                <div class="col-lg-8 col-lg-offset-2">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBox("date", null, new { @class = "form-control", @onblur = "ChangeSelection()" })
+                                        <span class="input-group-addon btn-info">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th>Aadhar No</th>
+                        <th colspan="2">ACTION</th>
+
+                    </tr>
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@student.ApplicationNo</td>
+                            <td>@student.StudentName</td>
+                            <td>@student.FatherName</td>
+                            <td>@student.CoursePreferred</td>
+                            <td>@student.DateOfAdmission</td>
+                            <td>@student.AadharNo</td>
+                            <td>
+                                <button class="btn btn-info glyphicon glyphicon-pencil"> Edit</button>
+                            </td>
+                            <td>
+                                @*<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,1)" data-dismiss="modal">Admission</button>
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,2)">Acknowledge</button>*@
+                                @*<button type="button" class="btn btn-primary glyphicon glyphicon-print" data-toggle="popover"> Print</button>*@
+                                <button class='btn btn-info btn-large glyphicon glyphicon-print' data-popover="true" data-placement="right" data-html=true data-content='<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,1)" data-dismiss="modal">Admission</button><hr />
+                                <button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,2)">Acknowledge</button>'> Print</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+                <div class="col-lg-7">
+                    @if (ViewBag.Pager.EndPage > 1)
+                    {
+                    <ul class="pagination">
+                        @if (ViewBag.Pager.CurrentPage > 1)
+                            {
+                            <li>
+                                <a onclick="ChangePage(1)" href="#">First</a>
+                            </li>
+                            <li>
+                                <a onclick="ChangePage(@ViewBag.Pager.CurrentPage - 1)" href="#">Previous</a>
+                            </li>
+                            }
+
+                        @for (var page = ViewBag.Pager.CurrentPage; page <= ViewBag.Pager.EndPage; page++)
+                            {
+                            <li class="@(page == ViewBag.Pager.CurrentPage ? "active" : "")">
+                                <a href="#" onclick="ChangePage(@page)">@page</a>
+                            </li>
+                            }
+
+                        @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
+                            {
+                            <li>
+                                <a href="#" onclick="ChangePage(@ViewBag.Pager.CurrentPage + 1)">Next</a>
+                            </li>
+                            <li>
+                                <a onclick="ChangePage(@ViewBag.Pager.TotalPages)" href="#">Last</a>
+                            </li>
+                            }
+                    </ul>
+                    }
                 </div>
+                <div class="col-lg-5 text-right">
+                    <br />
+                    <label>
+                        Show&nbsp;
+                        <select name="pageSize" aria-controls="example" id="pageSize" class="dropdown form-control-static" onchange="ChangeSelection()">
+                            <option value="5">&nbsp;5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>&nbsp; Entries
+                    </label>
+                </div>
+
             </div>
+
+
         </div>
     </div>
+    <input type="hidden" id="page" name="page" value="1" />
+    <input type="hidden" id="SelectedGroup" value="@ViewBag.Group" />
+    <input type="hidden" id="SelectedPageSize" value="@ViewBag.pageSize" />
 }
 
 
 
-<br />
-
-<table class="table">
-    <tr>
-        <th>Application No</th>
-        <th>Student Name</th>
-        <th>Father Name</th>
-        <th>Date Of Admission</th>
-        <th>Aadhar No</th>
-    </tr>
-    @foreach (var student in Model)
-    {
-        <tr>
-            <td>@student.ApplicationNo</td>
-            <td>@student.StudentName</td>
-            <td>@student.FatherName</td>
-            <td>@student.DateOfAdmission</td>
-            <td>@student.AadharNo</td>
-        </tr>
-    }
-</table>
-
-@(ViewBag.PagerCurrentPage + 2)
-
-<!-- pager -->
-@if (ViewBag.Pager.EndPage > 1)
-{
-    <ul class="pagination">
-        @if (ViewBag.Pager.CurrentPage > 1)
-        {
-            <li>
-                
-                @if (ViewBag.SelectedDate != null)
-                {                    
-                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate">First</a>
-                }
-                else
-                {
-                    <a href="ShowAllStudents">First</a>                    
-                }
-            </li>
-            <li>
-                @if (ViewBag.SelectedDate != null)
-                {
-                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate&&page=@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
-                }
-                else
-                {
-                    <a href="ShowAllStudents?page=@(ViewBag.Pager.CurrentPage - 1)">Previous</a>
-                }
-            </li>
-        }
-
-        @for (var page = ViewBag.Pager.CurrentPage; page <= ViewBag.Pager.EndPage; page++)
-        {
-            <li class="@(page == ViewBag.Pager.CurrentPage ? "active" : "")">
-                @if (ViewBag.SelectedDate != null)
-                {                   
-                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate&&page=@page">@page</a>
-                }
-                else
-                {
-                    <a href="ShowAllStudents?page=@page">@page</a>                  
-                }
-            </li>
-        }
-
-        @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
-        {
-            <li>
-                @if (ViewBag.SelectedDate != null)
-                {
-                    <a href="ShowAllStudents?date=@ViewBag.SelectedDate&&page=@(ViewBag.Pager.CurrentPage + 1)">Next</a>
-                }
-                else
-                {
-                    <a href="ShowAllStudents?page=@(ViewBag.Pager.CurrentPage + 1)">Next</a>
-                }              
-            </li>
-            <li>
-                <a href="ShowAllStudents?page=@(ViewBag.Pager.TotalPages)">Last</a>
-            </li>
-        }
-    </ul>
-}
-
-
-
+@*<div id='popover2' style='display:inline;position:absolute; top:50px; left:50px;'>popover2</div>*@
 
 

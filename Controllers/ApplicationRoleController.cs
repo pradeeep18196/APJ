@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class ApplicationRoleController : Controller
     {
         private readonly RoleManager<ApplicationRole> roleManager;

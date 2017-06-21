@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Abdul_kalam_clg.Migrations
 {
-    public partial class newauthorization : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -88,12 +88,12 @@ namespace Abdul_kalam_clg.Migrations
                     AadharCopy = table.Column<string>(nullable: true),
                     AadharNo = table.Column<string>(nullable: true),
                     ApplicationNo = table.Column<string>(nullable: true),
-                    BalanceFee = table.Column<int>(nullable: false),
                     Caste = table.Column<string>(nullable: true),
                     ContactNo = table.Column<string>(nullable: true),
                     CoursePreferred = table.Column<string>(nullable: true),
                     DOB = table.Column<DateTime>(type: "Date", nullable: false),
                     DateOfAdmission = table.Column<DateTime>(type: "Date", nullable: false),
+                    Description = table.Column<string>(nullable: true),
                     FatherName = table.Column<string>(nullable: true),
                     FirstYearFee = table.Column<int>(nullable: false),
                     GradePoint = table.Column<double>(nullable: false),
@@ -115,6 +115,7 @@ namespace Abdul_kalam_clg.Migrations
                     SecondYearFee = table.Column<int>(nullable: false),
                     SscBonafide = table.Column<string>(nullable: true),
                     SscLongMemo = table.Column<string>(nullable: true),
+                    SscPassedYear = table.Column<string>(nullable: true),
                     SscShortMemo = table.Column<string>(nullable: true),
                     SscTc = table.Column<string>(nullable: true),
                     StatusId = table.Column<int>(nullable: false),

@@ -3,16 +3,18 @@
     ViewData["Title"] = "Edit Student";
 }
 
-<br /><br />
+<br />
+
 <div class="panel panel-primary">
-    <div class="panel-heading">Edit Student</div>
+    <div class="panel-heading" style="font-size:17px">Edit Student<a href="http://localhost:2473/Admin/Admission" class="col-lg-offset-10 btn btn-sm btn-default">Back</a></div>
+
     <br />
     <div class="panel-body">
         @using (Html.BeginForm("UpdateStudent", "Admission", FormMethod.Get))
         {
             <label>Application No / Aadhar No</label> @Html.TextBox("ApplicationNo", null, new { @class = "form-control" })
             <br />
-            <button class="btn btn-info">Edit</button>
+            <button class="btn btn-info">Edit</button>            
         }
     </div>
     <br />

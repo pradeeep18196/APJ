@@ -14,289 +14,298 @@
     });
 </script>
 <div class="col-sm-10">
+
     <label>Admission Form</label>
-    <div class="panel" style="border-color:darkgrey;border-radius:8px">
-        <br />
-        <div class="table">
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    @if (Model.ApplicationNo != "")
-                    {
-                        <br /><br />
-                        <label>Application No :</label>
-                        <label id="ApplicationNo" name="ApplicationNo">@Model.ApplicationNo</label>
-                        <input type="hidden" name="ApplicationNo" value="@Model.ApplicationNo" />
-                    }
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Student Photo</label>
-                    <br />
-                    <img id="StudentPhotoPreview" height="100" width="100" src=@string.Format("/images/Photos/{0}",Model.Photo)>
 
-                    <input type="file" name="StudentPhoto" id="StudentPhoto" onchange="PreviewImage('StudentPhoto')" /><br />
-                    @* @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })*@
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Name of The Student</label>
-                    @Html.TextBoxFor(m => m.StudentName, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Father's/Guardian's Name</label>
-                    <input asp-for="FatherName" class="form-control">
-                    @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Mother's Name</label>
-                    @Html.TextBoxFor(m => m.MotherName, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.MotherName, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Aadhar No</label>
-                    <input asp-for="AadharNo" class="form-control">
-                    @Html.ValidationMessageFor(model => model.AadharNo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>SSC Pass Type</label>
-                    @Html.DropDownListFor(model => model.SchoolEducation, ViewBag.SchoolEducation as IEnumerable<SelectListItem>, "-- Select --", new { @class = "form-control" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>10TH HallTicket No</label>
-                    <input asp-for="HallTicketNo" class="form-control">
-                    @Html.ValidationMessageFor(model => model.HallTicketNo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>GPA/GRADE Obtained</label>
-                    @Html.TextBoxFor(m => m.GradePoint, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.GradePoint, "", new { @class = "text-danger" })
-
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Ssc Passed Out Year</label>
-                    @Html.TextBoxFor(m => m.SscPassedYear, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SscPassedYear, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Name of the School</label>
-                    @Html.TextBoxFor(m => m.SchoolName, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SchoolName, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>School Address</label>
-                    <input asp-for="SchoolAddress" class="form-control">
-                    @Html.ValidationMessageFor(model => model.SchoolAddress, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Course Preferred</label>
-
-                    @Html.DropDownListFor(model => model.CoursePreferred, ViewBag.Courses as IEnumerable
-                        <SelectListItem>, "-- Select --", new { @class = "form-control" })
-
-                    @Html.ValidationMessageFor(model => model.CoursePreferred, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Medium of Instruction</label>
-                    <input asp-for="Medium" class="form-control">
-                    @Html.ValidationMessageFor(model => model.Medium, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Language</label>
-
-                    @Html.DropDownListFor(model => model.Language, ViewBag.Languages as IEnumerable
-                        <SelectListItem>, "-- Select --", new { @class = "form-control" })
-
-                    @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Religion</label>
-                    <input asp-for="Religion" class="form-control">
-                    @Html.ValidationMessageFor(model => model.Religion, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Caste</label>
-
-                    @Html.DropDownListFor(model => model.Caste, ViewBag.castes as IEnumerable
-                        <SelectListItem>, "-- Select --", new { @class = "form-control" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Sub Caste</label>
-                    @Html.TextBoxFor(m => m.SubCaste, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SubCaste, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Mother Tongue </label>
-                    <input asp-for="MotherTongue" class="form-control">
-                    @Html.ValidationMessageFor(model => model.MotherTongue, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>First Year Fee</label>
-                    @Html.TextBoxFor(m => m.FirstYearFee, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.FirstYearFee, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Second Year Fee</label>
-                    @Html.TextBoxFor(m => m.SecondYearFee, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SecondYearFee, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <div class="row">
-                        <div class='col-sm-10'>
-                            <div class="form-group">
-                                <label>Date of Birth as per SSC</label>
-                                <div class='input-group date' id='datetimepicker1'>
-                                    @Html.TextBox("DOB", null, new { @class = "form-control" })
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Parent Occupation</label>
-                    @Html.TextBoxFor(model => model.ParentOccupation, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ParentOccupation, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Address For Correspondence</label><br />
-                    <textarea asp-for="StudentAddress"></textarea>
-                    @Html.ValidationMessageFor(model => model.SchoolAddress, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Contact Number</label>
-                    <input asp-for="ContactNo" class="form-control">
-                    @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Mobile Number</label>
-                    <input asp-for="MobileNo" class="form-control">
-                    @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Identification Marks</label>
-                    @Html.TextBoxFor(model => model.IdentificationMarks1, null, new { @class = "form-control" })
-                    <label></label>
-                    @Html.TextBoxFor(model => model.IdentificationMarks2, null, new { @class = "form-control" })
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <div class="row">
-                        <div class='col-sm-10'>
-                            <div class="form-group">
-                                <label>Date of Admission</label>
-                                <div class='input-group date' id='datetimepicker1'>
-                                    @Html.TextBox("DateOfAdmission", null, new { @class = "form-control" , @readonly = "readonly" })
-                                    @Html.ValidationMessageFor(model => model.DateOfAdmission, "", new { @class = "text-danger" })
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Signature of Student</label>
-                    <br />
-                    <img id="StudentSignPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.StudentSignature)>
-                    <input type="file" name="StudentSign" id="StudentSign" onchange="PreviewImage('StudentSign')" />
-                    @*@Html.ValidationMessageFor(model => model.StudentSign, "", new { @class = "text-danger" })*@
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Signature of Parent</label>
-                    <br />
-                    <img id="ParentSignPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.ParentSignature)>
-                    <input type="file" name="ParentSign" id="ParentSign" onchange="PreviewImage('ParentSign')" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Ssc Short Memo</label>
-                    <br />
-                    <img id="ShortMemoPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscShortMemo)>
-                    <input type="file" name="ShortMemo" id="ShortMemo" onchange="PreviewImage('ShortMemo')" />
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>SSC Long Memo</label>
-                    <br />
-                    <img id="LongMemoPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscLongMemo)>
-                    <input type="file" name="LongMemo" id="LongMemo" onchange="PreviewImage('LongMemo')" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Ssc Tc</label>
-                    <br />
-                    <img id="TcPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscTc)>
-                    <input type="file" name="Tc" id="Tc" onchange="PreviewImage('Tc')" />
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Ssc Bonafide</label>
-                    <br />
-                    <img id="BonafidePreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscBonafide)>
-                    <input type="file" name="Bonafide" id="Bonafide" onchange="PreviewImage('Bonafide')" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-offset-1 col-lg-5">
-                    <label>Aadhar Copy</label>
-                    <br />
-                    <img id="AadharPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.AadharCopy)>
-                    <input type="file" name="Aadhar" id="Aadhar" onchange="PreviewImage('Aadhar')" />
-                    <br />
-                </div>
-                <div class="col-lg-offset-1 col-lg-5">
-                    <br />
-                    <input type="submit" class="btn btn-primary">
-                </div>
-            </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="font-size:17px"><a href="http://localhost:2473/Admin/Admission" class="col-lg-offset-11 btn btn-sm btn-default">Back</a></div>
+        <div class="panel">
             <br />
+            <div class="table">
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        @if (Model.ApplicationNo != "")
+                        {
+                            <br /><br />
+                            <label>Application No :</label>
+                            <label id="ApplicationNo">@Model.ApplicationNo</label>
+                            <input type="hidden" name="ApplicationNo" value="@Model.ApplicationNo" />
+                        }
+                        else
+                        {
+                            <br /><br />
+                        }
+                        <br /><br />
+                        <label>Surname</label>
+                        <input asp-for="Surname" class="form-control">
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Student Photo</label>
+                        <br />
+                        <img id="StudentPhotoPreview" height="100" width="100" src=@string.Format("/images/Photos/{0}",Model.Photo)>
+
+                        <input type="file" name="StudentPhoto" id="StudentPhoto" onchange="PreviewImage('StudentPhoto')" /><br />
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Name of The Student</label>
+                        @Html.TextBoxFor(m => m.StudentName, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Father's/Guardian's Name</label>
+                        <input asp-for="FatherName" class="form-control">
+                        @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Mother's Name</label>
+                        @Html.TextBoxFor(m => m.MotherName, null, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MotherName,"", new { @class = "text-danger" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Aadhar No</label>
+                        <input asp-for="AadharNo" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>SSC Pass Type</label>
+                        @Html.DropDownListFor(model => model.SchoolEducation, ViewBag.SchoolEducation as IEnumerable<SelectListItem>, "-- Select --", new { @class = "form-control" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>10TH HallTicket No</label>
+                        <input asp-for="HallTicketNo" class="form-control">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>GPA/GRADE Obtained</label>
+                        @Html.TextBoxFor(m => m.GradePoint, null, new { @class = "form-control" })
+
+
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Ssc Passed Out Year</label>
+                        @Html.TextBoxFor(m => m.SscPassedYear, null, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Name of the School</label>
+                        @Html.TextBoxFor(m => m.SchoolName, null, new { @class = "form-control" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>School Address</label>
+                        <textarea asp-for="SchoolAddress" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Course Preferred</label>
+
+                        @Html.DropDownListFor(model => model.CoursePreferred, ViewBag.Courses as IEnumerable
+                        <SelectListItem>, "-- Select --", new { @class = "form-control" })
+
+
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Medium of Instruction</label>
+                        <input asp-for="Medium" class="form-control">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Language</label>
+
+                        @Html.DropDownListFor(model => model.Language, ViewBag.Languages as IEnumerable
+                        <SelectListItem>, "-- Select --", new { @class = "form-control" })
+
+
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Religion</label>
+                        <input asp-for="Religion" class="form-control">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Caste</label>
+
+                        @Html.DropDownListFor(model => model.Caste, ViewBag.castes as IEnumerable
+                        <SelectListItem>, "-- Select --", new { @class = "form-control" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Sub Caste</label>
+                        @Html.TextBoxFor(m => m.SubCaste, null, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Mother Tongue </label>
+                        <input asp-for="MotherTongue" class="form-control">
+
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>First Year Fee</label>
+                        @Html.TextBoxFor(m => m.FirstYearFee, null, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Second Year Fee</label>
+                        @Html.TextBoxFor(m => m.SecondYearFee, null, new { @class = "form-control" })
+
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <div class="row">
+                            <div class='col-sm-10'>
+                                <div class="form-group">
+                                    <label>Date of Birth as per SSC</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBox("DOB", null, new { @class = "form-control" })
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Parent Occupation</label>
+                        @Html.TextBoxFor(model => model.ParentOccupation, null, new { @class = "form-control" })
+
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Address For Correspondence</label><br />
+                        <textarea asp-for="StudentAddress" class="form-control"></textarea>
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Mobile Number</label>
+                        <input asp-for="MobileNo" class="form-control">
+                        @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Contact Number</label>
+                        <input asp-for="ContactNo" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Identification Marks</label>
+                        @Html.TextBoxFor(model => model.IdentificationMarks1, null, new { @class = "form-control" })
+                        <label></label>
+                        @Html.TextBoxFor(model => model.IdentificationMarks2, null, new { @class = "form-control" })
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <div class="row">
+                            <div class='col-sm-10'>
+                                <div class="form-group">
+                                    <label>Date of Admission</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBox("DateOfAdmission", null, new { @class = "form-control", @readonly = "readonly" })
+
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Signature of Student</label>
+                        <br />
+                        <img id="StudentSignPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.StudentSignature)>
+                        <input type="file" name="StudentSign" id="StudentSign" onchange="PreviewImage('StudentSign')" />
+                        @*@Html.ValidationMessageFor(model => model.StudentSign, "", new { @class = "text-danger" })*@
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Signature of Parent</label>
+                        <br />
+                        <img id="ParentSignPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.ParentSignature)>
+                        <input type="file" name="ParentSign" id="ParentSign" onchange="PreviewImage('ParentSign')" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Ssc Short Memo</label>
+                        <br />
+                        <img id="ShortMemoPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscShortMemo)>
+                        <input type="file" name="ShortMemo" id="ShortMemo" onchange="PreviewImage('ShortMemo')" />
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>SSC Long Memo</label>
+                        <br />
+                        <img id="LongMemoPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscLongMemo)>
+                        <input type="file" name="LongMemo" id="LongMemo" onchange="PreviewImage('LongMemo')" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Ssc Tc</label>
+                        <br />
+                        <img id="TcPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscTc)>
+                        <input type="file" name="Tc" id="Tc" onchange="PreviewImage('Tc')" />
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Ssc Bonafide</label>
+                        <br />
+                        <img id="BonafidePreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.SscBonafide)>
+                        <input type="file" name="Bonafide" id="Bonafide" onchange="PreviewImage('Bonafide')" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <label>Aadhar Copy</label>
+                        <br />
+                        <img id="AadharPreview" height="50" width="200" src=@string.Format("/images/Photos/{0}",Model.AadharCopy)>
+                        <input type="file" name="Aadhar" id="Aadhar" onchange="PreviewImage('Aadhar')" />
+                        <br />
+                    </div>
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <br />
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </div>
+                <br />
+            </div>
         </div>
     </div>
 </div>

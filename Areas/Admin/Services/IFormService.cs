@@ -6,17 +6,15 @@ namespace WebApplication.Areas.Admin.Services
 {
     public interface IAdmission
     {
-        void AddStudent(ApplicationForm appForm);
-        string AppNo();
+        string AddStudent(ApplicationForm appForm);
         string AppNo(string CName,int year);
-        void UpdateStudent(ApplicationForm appForm);
-        //void SaveImages(ApplicationViewModel appForm);
+        void UpdateStudent(ApplicationForm appForm);        
         void SaveImages(string appNo,ApplicationViewModel appForm);
         ApplicationForm getStudent(string AppNo);
-        List<ApplicationForm> GetAllStudents(DateTime? date,int page,int pageSize);
-        int Count(DateTime ?date);
-        bool DeleteStudent(string appno);
-        string AppNo(string AadharNo);
+        List<ApplicationForm> GetAllStudents(DateTime? date,int page,int pageSize, string studentName, string group);
+        int Count(string studentName, string group, DateTime? Date);
+        bool DeleteStudent(string appno,string description);
+        string AppNo(string Sname,string Fname,string MobileNo);
     }
 
 }

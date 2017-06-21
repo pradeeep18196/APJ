@@ -8,6 +8,8 @@ namespace WebApplication.Areas.Admin.Models
     {
         public string ApplicationNo { get; set; }
         [Required]
+        public string Surname { get; set; }
+        [Required]
         [StringLength(30)]
         public string StudentName { get; set; }
         [Required]
@@ -15,8 +17,7 @@ namespace WebApplication.Areas.Admin.Models
         public string FatherName { get; set; }
         [Required]
         public string CoursePreferred { get; set; }
-        //[Required]
-        //[StringLength(30)]
+        [Required]
         public string MotherName { get; set; }
         //[StringLength(12),MinLength(12),MaxLength(12)]
         public string AadharNo { get; set; }
@@ -52,9 +53,10 @@ namespace WebApplication.Areas.Admin.Models
         public string ParentOccupation { get; set; }
                     
         public string StudentAddress { get; set; }
-                    
         public string ContactNo { get; set; }
-                    
+        [Required]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Mobile number must be numeric")]
+        [MinLength(10), MaxLength(10)]
         public string MobileNo { set; get; }
                     
         public string IdentificationMarks1 { get; set; }

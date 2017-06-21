@@ -4,10 +4,15 @@
 @{
     ViewData["Title"] = "AdmissionForm";
 }
-<br/>
-<div class="row">
-    @using (Html.BeginForm("AddStudent", "Admission", FormMethod.Post, new { id = "StudentForm", enctype = "multipart/form-data" }))
-    {
-           @Html.Partial("~/Areas/Admin/Views/Shared/_EditStudent.cshtml")
-    }
+<br />
+<div class="container" >
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+        @using (Html.BeginForm("AddStudent", "Admission", FormMethod.Post, new { id = "StudentForm", enctype = "multipart/form-data" }))
+        {
+            @Html.Partial("~/Areas/Admin/Views/Shared/_EditStudent.cshtml")
+        }
+    </div></div>
 </div>
+    

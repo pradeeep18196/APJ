@@ -17,18 +17,19 @@ namespace WebApplication.Areas.Admin.Services
             _context = context;
             _environment = environment;
         }
-        public void AddStudent(ApplicationForm appForm)
-        {        
+        public string AddStudent(ApplicationForm appForm)
+        {
             appForm.ApplicationNo = AppNo(appForm.CoursePreferred, appForm.DateOfAdmission.Year);
             appForm.StatusId = 1;
             _context.ApplicationForms.Add(appForm);
             _context.SaveChanges();
+            return appForm.ApplicationNo;
         }
         public void SaveImages(string appNo, ApplicationViewModel appForm)
         {
             ApplicationForm Form = getStudent(appNo);
             if (appNo == null)
-                appNo = AppNo(appForm.CoursePreferred, appForm.DateOfAdmission.Year);    
+                appNo = AppNo(appForm.CoursePreferred, appForm.DateOfAdmission.Year);
 
             var path = Path.Combine(_environment.WebRootPath, "images\\Photos");
             if (appForm.StudentPhoto != null)
@@ -124,20 +125,16 @@ namespace WebApplication.Areas.Admin.Services
             }
             _context.SaveChanges();
         }
-        public string AppNo()
-        {
-            return "";
-        }
-        public string AppNo(string CName,int year)
+        public string AppNo(string CName, int year)
         {
             var rollno = year % 100;
-            string appNo="";
+            string appNo = "";
 
             //pending
             if (CName.Contains("M.P.C"))
             {
-                appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m=>m.CoursePreferred.Contains("M.P.C")).Select(m => m.ApplicationNo).FirstOrDefault();
-                if(appNo==null)
+                appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m => m.CoursePreferred.Contains("M.P.C")).Select(m => m.ApplicationNo).FirstOrDefault();
+                if (appNo == null)
                     appNo = (rollno.ToString()) + (rollno + 2) + 11000;
             }
             else if (CName.Contains("Bi.P.C"))
@@ -152,7 +149,7 @@ namespace WebApplication.Areas.Admin.Services
                 if (appNo == null)
                     appNo = (rollno.ToString()) + (rollno + 2) + 13000;
             }
-            else if(CName.Contains("C.E.C"))
+            else if (CName.Contains("C.E.C"))
             {
                 appNo = _context.ApplicationForms.OrderByDescending(m => m.ApplicationNo).Where(m => m.CoursePreferred.Contains("C.E.C")).Select(m => m.ApplicationNo).FirstOrDefault();
                 if (appNo == null)
@@ -209,33 +206,74 @@ namespace WebApplication.Areas.Admin.Services
         */
         public ApplicationForm getStudent(string AppNo_AadharNo)
         {
-            if(AppNo_AadharNo.Length==12)
+            if (AppNo_AadharNo!=null && AppNo_AadharNo.Length == 12)
             {
                 return _context.ApplicationForms.Where(s => s.AadharNo == AppNo_AadharNo.ToString() && s.StatusId == 1).FirstOrDefault();
             }
             return _context.ApplicationForms.Where(s => s.ApplicationNo == AppNo_AadharNo.ToString() && s.StatusId == 1).FirstOrDefault();
         }
-        public List<ApplicationForm> GetAllStudents(DateTime? date, int page, int pageSize)
+        /*        public List<ApplicationForm> GetAllStudents(DateTime? date, int page, int pageSize, string studentName, string group)
+                {
+                    if (date == null)
+                    {
+                        var Student = _context.ApplicationForms.Where(s => s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                        return Student;
+                    }
+                    var Students = _context.ApplicationForms.Where(s => s.DateOfAdmission == date ).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Students;
+                }*/
+        public List<ApplicationForm> GetAllStudents(DateTime? date, int page, int pageSize, string studentName, string group)
         {
-            if (date == null)
+            List<ApplicationForm> appForms;
+            if (group == "All" || group==null)
             {
-                var Student = _context.ApplicationForms.Where(s => s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-                return Student;
+                group = ".";
             }
-            var Students = _context.ApplicationForms.Where(s => s.DateOfAdmission == date ).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            return Students;
+            if (date != null && studentName != null)
+            {
+                appForms = _context.ApplicationForms.Where(s => s.DateOfAdmission == date && s.CoursePreferred.Contains(group) && s.StudentName.Contains(studentName) && s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();                
+            }
+            else if (date != null)
+            {
+                appForms = _context.ApplicationForms.Where(s => s.CoursePreferred.Contains(group) && s.DateOfAdmission == date && s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();                
+            }
+            else if (studentName != null)
+            {
+                appForms = _context.ApplicationForms.Where(s => s.CoursePreferred.Contains(group) && s.StudentName.Contains(studentName) && s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            }
+            else
+            {
+                appForms = _context.ApplicationForms.Where(s => s.CoursePreferred.Contains(group) && s.StatusId == 1).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            }            
+            return appForms;
         }
-        public int Count(DateTime? Date)
+        public int Count(string studentName, string group, DateTime? date)
         {
             int count;
-            if (Date != null)
-                count= _context.ApplicationForms.Where(date => date.DateOfAdmission == Date).Count();
+
+            if (group == "All" || group == null)
+            {
+                group = ".";
+            }
+            if (date != null && studentName != null)
+            {
+                count = _context.ApplicationForms.Where(s => s.DateOfAdmission == date && s.CoursePreferred.Contains(group) && s.StudentName.Contains(studentName) && s.StatusId == 1).Count();
+            }
+            else if (date != null)
+            {
+                count = _context.ApplicationForms.Where(s => s.CoursePreferred.Contains(group) && s.DateOfAdmission == date && s.StatusId == 1).Count();
+            }
+            else if (studentName != null)
+            {
+                count = _context.ApplicationForms.Where(s =>s.CoursePreferred.Contains(group) && s.StudentName.Contains(studentName) && s.StatusId == 1).Count();
+            }
             else
-                count =_context.ApplicationForms.Count();
+            {
+                count = _context.ApplicationForms.Where(s => s.CoursePreferred.Contains(group) && s.StatusId == 1).Count();
+            }            
             return count;
         }
-
-        public bool DeleteStudent(string AppNo_AadharNo)
+        public bool DeleteStudent(string AppNo_AadharNo, string description)
         {
             ApplicationForm appform;
 
@@ -246,20 +284,21 @@ namespace WebApplication.Areas.Admin.Services
             else
             {
                 appform = _context.ApplicationForms.Where(app => app.ApplicationNo == AppNo_AadharNo).FirstOrDefault();
-            }   
+            }
             if (appform != null)
             {
 
                 appform.StatusId = 2;
+                appform.Description = description;
                 _context.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public string AppNo(string AadharNo)
+        public string AppNo(string Sname, string Fname, string MobileNo)
         {
-            return _context.ApplicationForms.Where(a => a.AadharNo == AadharNo && a.StatusId == 1).Select(s=>s.ApplicationNo ).FirstOrDefault();
+            return _context.ApplicationForms.Where(a => a.StudentName == Sname && a.FatherName == Fname && a.MobileNo == MobileNo).Select(s => s.ApplicationNo).FirstOrDefault();
         }
     }
 }

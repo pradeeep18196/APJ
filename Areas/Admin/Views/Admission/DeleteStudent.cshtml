@@ -1,15 +1,23 @@
 ﻿@using WebApplication.Areas.Admin.Models
 @model ApplicationForm
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#description").prop('required', true);
+});
+</script>
 
 @using (Html.BeginForm("Delete_Student", "Admission"))
 {<br />
     <div class="panel panel-primary">
-        <div class="panel-heading">Delete Student</div>
+        <div class="panel-heading" style="font-size:17px">Delete Student<a href="http://localhost:2473/Admin/Admission" class="col-lg-offset-10 btn btn-sm btn-default">Back</a></div>
         <br />
         <div class="panel-body">
             <label>Application No / Aadhar No</label>
-            <input type="text" class="form-control" name="appno"><br />
+            <input type="text" class="form-control" name="appno">
+            <label>Description</label>
+            <textarea type="text" class="form-control" id="description" name="description" ></textarea><br />            
             <button type="button" name="submitbtn" data-toggle="modal" data-target="#exampleModalLong" value="Search" class="btn btn-info">
                 <span class="glyphicon glyphicon-trash"></span> Delete
             </button>

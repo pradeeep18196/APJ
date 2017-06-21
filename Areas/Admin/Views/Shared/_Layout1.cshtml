@@ -23,10 +23,14 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <style>
+        .navbar-inverse {
+            border-color: #337ab7;
+        }
+    </style>
 </head>
-<body style="background-color:lightgrey">
-    <!--style="background-color:darkgrey"-->
-    <div class="navbar navbar-inverse navbar-fixed-top">
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" span style="background-color:#101010;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -35,23 +39,203 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="Admin" asp-controller="Admission" asp-action="Index" class="navbar-brand">APJ AbdulKalam</a>
+                @*<a asp-area="Admin" asp-controller="Admission" asp-action="Index" style="color:white" class="navbar-brand">APJ AbdulKalam</a>*@
             </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/Admin" style="font-size:18px"> Home</a></li>
+                <li>
+                    <a href="#" data-popover="true" data-html=true data-placement="bottom" style="font-size:18px" data-content='<a href="http://localhost:2473/Admin/Admission/AddStudent">New Admission</a><br/><br/><a href="http://localhost:2473/Admin/Admission/EditStudent">Edit Admission</a><br/><br/><a href="http://localhost:2473/Admin/Admission/ShowAllStudents">ShowAllAdmissions</a><br/><br/><a href="http://localhost:2473/Admin/Admission/DeleteStudent">Delete Admission</a>'>
+                        Admission
+                    </a>
+                </li>
+            </ul>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="Admin" asp-controller="Admission" asp-action="Index">Admission</a></li>
-                    <!--<li><a asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>-->
-                </ul>                
+                @*<ul class="nav navbar-nav">
+                        <li><a asp-area="Admin" asp-controller="Admission" asp-action="Index" style="color:white">Admission</a></li>
+                    </ul>*@
                 @await Html.PartialAsync("_UserHeader")
             </div>
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2016 - Innovative Software Solutions</p>
+        <div id="slider" style="right:-342px;">
+            <div id="sidebar" onclick="open_panel()">
+                <img src="~/images/abc.png">
+            </div>
+            <div id="header">
+                @using (Html.BeginForm("SendNotification", "Notification"))
+                {
+                    <br /><br /><br />
+                    <select id="selection" name="selection" onchange="hideAppNo(this.value)">
+                        <option value="" disabled selected style="display: none;">Select your option</option>
+                        <option value="1">Send To Individual Student</option>
+                        <option value="2">Send By Group</option>
+                        <option value="3">Send To AllStudents</option>
+                    </select><br />
+                    <div id="appno" style="display:none">
+                        <input placeholder="Application/Aadhar No" type="text" name="appno">
+                    </div>
+                    <div id="Groups" style="display:none">
+                        <br />
+                        <label>Groups</label> <br />
+                        <input type="checkbox" name="groups" value="MPC">MPC<br>
+                        <input type="checkbox" name="groups" value="Bipc">Bipc<br>
+                        <input type="checkbox" name="groups" value="MEC">MEC<br>
+                        <input type="checkbox" name="groups" value="CEC">CEC<br>
+                    </div>
+                    <div id="subject" style="display:none">
+                        <textarea type="text" placeholder="Message" id="description" name="description"></textarea><br />
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-info">
+                            <span class="glyphicon glyphicon-se"></span> Send Notification
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <script>
+            function open_panel() {
+                slideIt();
+                var a = document.getElementById("sidebar");
+                a.setAttribute("id", "sidebar1");
+                a.setAttribute("onclick", "close_panel()");
+            }
+
+            function slideIt() {
+                var slidingDiv = document.getElementById("slider");
+                var stopPosition = 0;
+                if (parseInt(slidingDiv.style.right) < stopPosition) {
+                    slidingDiv.style.right = parseInt(slidingDiv.style.right) + 2 + "px";
+                    setTimeout(slideIt, 1);
+                }
+            }
+
+            function close_panel() {
+                slideIn();
+                a = document.getElementById("sidebar1");
+                a.setAttribute("id", "sidebar");
+                a.setAttribute("onclick", "open_panel()");
+            }
+
+            function slideIn() {
+                var slidingDiv = document.getElementById("slider");
+                var stopPosition = -342;
+                if (parseInt(slidingDiv.style.right) > stopPosition) {
+                    slidingDiv.style.right = parseInt(slidingDiv.style.right) - 2 + "px";
+                    setTimeout(slideIn, 1);
+                }
+            }
+
+            function hideAppNo(value) {
+                if (value == "1") {
+                    document.getElementById("appno").style.display = "block";
+                    document.getElementById("subject").style.display = "block";
+                    document.getElementById("Groups").style.display = "none";
+                }
+                else if (value == "2") {
+                    document.getElementById("appno").style.display = "none";
+                    document.getElementById("subject").style.display = "block";
+                    document.getElementById("Groups").style.display = "block";
+                }
+                else if (value == "3") {
+                    document.getElementById("appno").style.display = "none";
+                    document.getElementById("subject").style.display = "block";
+                    document.getElementById("Groups").style.display = "none";
+                }
+            }
+        </script>
+        <style>
+            #slider {
+                width: 500px;
+                top: 150px;
+                position: absolute;
+            }
+
+            #header {
+                width: 333px;
+                height: 520px;
+                position: absolute;
+                right: 0;
+                border: 1px solid #d8d8d8;
+                margin-left: 40px;
+                padding: 20px 40px;
+                border-radius: 3px;
+                box-shadow: 0 0 8px gray;
+            }
+
+            #sidebar {
+                position: absolute;
+                top: 100px;
+                left: 113px;
+                box-shadow: 0 0 8px gray;
+            }
+
+            #sidebar1 {
+                position: absolute;
+                top: 100px;
+                left: 113px;
+                box-shadow: 0 0 8px gray;
+            }
+
+            h3 {
+                font-family: 'Roboto Slab',serif;
+            }
+
+            input[type=text] {
+                margin-top: 10px;
+                padding: 6px;
+                width: 100%;
+                font-size: 15px;
+                border-radius: 2px;
+                border: 3px solid #98d0f1;
+            }
+
+            h4 {
+                font-size: 15px;
+            }
+
+            div#title {
+                position: absolute;
+                top: 300px;
+                left: 650px;
+            }
+
+            select {
+                padding: 6px;
+                width: 100%;
+                font-size: 15px;
+                border-radius: 2px;
+                border: 3px solid #98d0f1;
+            }
+
+            textarea {
+                padding: 6px;
+                font-size: 15px;
+                border-radius: 2px;
+                border: 3px solid #98d0f1;
+                margin-top: 10px;
+                height: 80px;
+                width: 100%;
+            }
+
+            button {
+                background: #2bc1f2;
+                border: none;
+                color: #fff;
+                width: 100%;
+                font-size: 22px;
+                font-weight: bolder;
+                padding: 8px 0;
+                border-radius: 3px;
+                cursor: pointer;
+                margin-top: 25px;
+            }
+        </style>
+        <footer style="position:fixed;top:95%">
+            @*<p>&copy; 2016 - Innovative Software Solutions</p>*@
         </footer>
     </div>
 
