@@ -38,6 +38,7 @@
                         <br /><br />
                         <label>Surname</label>
                         <input asp-for="Surname" class="form-control">
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-lg-offset-1 col-lg-5">
                         <label>Student Photo</label>

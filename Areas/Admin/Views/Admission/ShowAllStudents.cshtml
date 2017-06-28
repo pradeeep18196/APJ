@@ -10,67 +10,6 @@
         $('.date').datetimepicker(
             { format: 'YYYY-MM-DD' })
     });
-
-    function printApplication(appno, opt) {
-        var win = window.open('PrintAdmission?appNo=' + appno + '&Option=' + opt, null, 'width=0,height=0');
-        win.onload = function () {
-            win.print();
-        }
-    }
-
-    //$(document).ready(function () {
-    //    $('[data-toggle="popover"]').popover({
-    //        placement: 'right',
-    //        trigger: 'hover',
-    //        html: true,
-    //        title: '<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(1212162612,1)" data-dismiss="modal">Admission</button>',
-    //        content: '<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(1212162612,1)" data-dismiss="modal">Admission</button>'
-    //    });
-    //});
-
-
-    var originalLeave = $.fn.popover.Constructor.prototype.leave;
-    $.fn.popover.Constructor.prototype.leave = function (obj) {
-        var self = obj instanceof this.constructor ?
-            obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
-        var container, timeout;
-
-        originalLeave.call(this, obj);
-
-        if (obj.currentTarget) {
-            container = $(obj.currentTarget).siblings('.popover')
-            timeout = self.timeout;
-            container.one('mouseenter', function () {
-                //We entered the actual popover – call off the dogs
-                clearTimeout(timeout);
-                //Let's monitor popover content instead
-                container.one('mouseleave', function () {
-                    $.fn.popover.Constructor.prototype.leave.call(self, self);
-                });
-            })
-        }
-    };
-
-    $('body').popover({ selector: '[data-popover]', trigger: 'click hover', delay: { show: 50, hide: 400 } });
-
-
-    function ChangeSelection() {
-        $("#Form").submit();
-    }
-
-    function ChangePage(page) {
-        $("#page").val(page);
-        $("#Form").submit();
-    }
-    $(document).ready(function () {
-        var x = $("#SelectedGroup").val();
-        if (x != "") {
-            $("#Group").val(x);
-        }
-        $("#pageSize").val($("#SelectedPageSize").val());
-
-    })
-
 </script>
 <style>
     th, td {
@@ -148,13 +87,13 @@
                             <td>@student.DateOfAdmission</td>
                             <td>@student.AadharNo</td>
                             <td>
-                                <button class="btn btn-info glyphicon glyphicon-pencil"> Edit</button>
+                                <a class="btn btn-info glyphicon glyphicon-pencil" href="/Admin/Admission/UpdateStudent?ApplicationNo=@student.ApplicationNo"> Edit</a>
                             </td>
                             <td>
                                 @*<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,1)" data-dismiss="modal">Admission</button>
                                     <button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,2)">Acknowledge</button>*@
                                 @*<button type="button" class="btn btn-primary glyphicon glyphicon-print" data-toggle="popover"> Print</button>*@
-                                <button class='btn btn-info btn-large glyphicon glyphicon-print' data-popover="true" data-placement="right" data-html=true data-content='<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,1)" data-dismiss="modal">Admission</button><hr />
+                                <button type="button" class='btn btn-info btn-large glyphicon glyphicon-print' data-popover="true" data-placement="right" data-html=true data-content='<button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,1)" data-dismiss="modal">Admission</button><hr />
                                 <button type="button" class="btn btn-primary glyphicon glyphicon-print" onclick="printApplication(@student.ApplicationNo,2)">Acknowledge</button>'> Print</button>
                             </td>
                         </tr>
@@ -206,7 +145,6 @@
                         </select>&nbsp; Entries
                     </label>
                 </div>
-
             </div>
 
 

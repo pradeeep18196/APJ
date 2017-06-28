@@ -21,8 +21,10 @@ namespace WebApplication.Areas.Admin.Services
         {
             var Contact = _context.ApplicationForms.Where(app => app.AadharNo == AppNo_AadharNo && app.StatusId != 2).Select(app => app.ContactNo).FirstOrDefault();
 
-            string strUrl = "http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=YourUserName:YourPassword&senderID=YourSenderID&    receipientno=" + Contact + "&msgtxt=" + msg + "API&state=4";
+            //string strUrl = "http://api.mVaayoo.com/mvaayooapi/MessageCompose?user=YourUserName:YourPassword&senderID=YourSenderID&    receipientno=" + Contact + "&msgtxt=" + msg + "API&state=4";
+            string strUrl = "http://www.metamorphsystems.com/index.php/api/bulk-sms?username=apjabdulkalam&password=Apj@15340&from=LADDU&campaign_name=Pradeep&to=9550877675&sms_type=2&message=This%20is%20INNOVATIVE%20SOFTWARE%20SOLUTIONS";
             WebRequest request = HttpWebRequest.Create(strUrl);
+            request.Method = "POST";
             WebResponse response = await request.GetResponseAsync();
             Stream s = (Stream)response.GetResponseStream();
             StreamReader readStream = new StreamReader(s);

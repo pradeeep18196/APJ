@@ -2,289 +2,195 @@
     ViewData["Title"] = "Index";
 }
 <br>
-@*
-    <style>
-        .search {
-            border-radius: 1px #ff00;
-            background: #fff;
-            border: -8px solid #fff;
-            font-size: 18px;
-            line-height: 2px;
-            width: 450px;
-            height: 40px;
-        }
+<script>
+    'use strict';
 
-        .button {
-            position: relative;
-            line-height: 2px;
-            height: 45px;
-            left: -8px;
-            border: 2px solid #fff;
-            background-color: #008299;
-            color: #fff;
-        }
+    var carousel = function carousel(options) {
 
-        .navigator span {
-            color: #888;
-            font-size: 15px;
-            font-weight: 400;
-        }
+        var _carousel = {
 
+            paused: false,
 
-        .navigator li {
-            border: 1px solid #888;
-            border-radius: 10px;
-            display: inline-block;
-            margin-bottom: 10px;
-            margin-left: 30px;
-            margin-top: 10px;
-            padding: 5px 5px;
-            width: 47%;
-            text-align: center;
-        }
+            stopped: false,
 
+            options: {
+                speed: 8000,
+                acceleration: 5,
+                reverse: false,
+                selector: '.c-carousel',
+                slidesSelector: '.c-carousel__slides',
+                leftArrowSelector: '.c-carousel__arrow--left',
+                rightArrowSelector: '.c-carousel__arrow--right'
+            },
 
+            init: function init() {
+                var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
+                // Copy options to this.options
+                for (var prop in options) {
+                    if (!options.hasOwnProperty(prop)) break;
+                    this.options[prop] = options[prop];
+                }
 
-        .navigator img {
-            float: left;
-            padding-left: 10px;
-        }
+                // Cache nodes
+                var carousel = document.querySelector(options.selector || this.options.selector);
+                var slides = this._slides = carousel.querySelector(this.options.slidesSelector);
+                this._leftArrow = carousel.querySelector(this.options.leftArrowSelector);
+                this._rightArrow = carousel.querySelector(this.options.rightArrowSelector);
 
+                // Multiply speed value by the number of slides
+                this.options.speed = this.options.speed * slides.children.length;
 
-        .btn-info {
-            color: #008299;
-            background-color: #fff;
-            border-color: #fff;
-        }
+                // Set slides container width
+                this.width = slides.offsetWidth;
 
+                // Repeat elements
+                slides.innerHTML = slides.innerHTML + slides.innerHTML + slides.innerHTML;
 
-        a{
-            font-size: 20px;
-        }
+                this._registerEvents();
+                this._animate();
+            },
+            _registerEvents: function _registerEvents() {
+                var _this = this;
 
-        .accordion-topics .glyphicon {
-            font-size: 25px;
-        }
-    </style>
+                var speed = this.options.speed;
+                var reverse = this.options.reverse;
 
-    @*<a href="/Admin/Admission/AddStudent" class="btn btn-primary col-md-3">Add Admission</a><br><br>
-        <a href="/Admin/Admission/EditStudent" class="btn btn-primary col-md-3">Edit Admission</a><br><br>
-        <a href="/Admin/Admission/ShowAllStudents" class="btn btn-primary col-md-3">Show All Admissions</a><br><br>
-        <a href="/Admin/Admission/DeleteStudent" class="btn btn-primary col-md-3">Delete Admission</a><br><br>*@
-@*
-        <div class="container">
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo1" span style="font-weight:bold; font-size:20px;">Admissions</button>
-            <div id="demo1" class="collapse in col-lg-offset-1">
-                <a href="/Admin/Admission/AddStudent" style="color:#008299">Add Admission</a><br><br>
-                <a href="/Admin/Admission/EditStudent" style="color:#008299">Edit Admission</a><br><br>
-                <a href="/Admin/Admission/ShowAllStudents" style="color:#008299">Show All Admissions</a><br><br>
-                <a href="/Admin/Admission/DeleteStudent" style="color:#008299">Delete Admission</a>
-            </div>
-        </div>
-        <br />
-        <div class="container">
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2" span style="font-weight:bold; font-size:20px;">Notification</button>
-            <div id="demo2" class="collapse in col-lg-offset-1">
-                <a href="/Admin/Notification/Index" style="color:#008299">Send Notification</a><br><br>
-            </div>
-        </div>
+                this._rightArrow.addEventListener('mouseover', function () {
+                    _this.options.speed = speed / _this.options.acceleration;
+                    _this.options.reverse = false;
+                });
+                this._rightArrow.addEventListener('mouseleave', function () {
+                    _this.options.speed = speed;
+                    _this.options.reverse = reverse;
+                });
+                this._leftArrow.addEventListener('mouseover', function () {
+                    _this.options.speed = speed / _this.options.acceleration;
+                    _this.options.reverse = true;
+                });
+                this._leftArrow.addEventListener('mouseleave', function () {
+                    _this.options.speed = speed;
+                    _this.options.reverse = reverse;
+                });
 
-    ////////////////////////////////
+                // Pause when cursor is over carousel
+                this._slides.addEventListener('mouseover', this.pause.bind(this));
+                this._slides.addEventListener('mouseleave', this.start.bind(this));
 
-    <div id="slider" style="right:-342px;">
-        <div id="sidebar" onclick="open_panel()">
-            <img src="~/images/abc.png">
-        </div>
-        <div id="header">
-            @using (Html.BeginForm("SendNotification", "Notification"))
-            {
-                <br /><br /><br />
-                <select id="selection" name="selection" onchange="hideAppNo(this.value)">
-                    <option value="" disabled selected style="display: none;">Select your option</option>
-                    <option value="1">Send To Individual Student</option>
-                    <option value="2">Send By Group</option>
-                    <option value="3">Send To AllStudents</option>
-                </select><br />
-                <div id="appno" style="display:none">
-                    <input placeholder="Application/Aadhar No" type="text" name="appno">
-                </div>
-                    <div id="Groups" style="display:none">
-                        <br />
-                        <label>Groups</label> <br />
-                        <input type="checkbox" name="groups" value="MPC">MPC<br>
-                        <input type="checkbox" name="groups" value="Bipc">Bipc<br>
-                        <input type="checkbox" name="groups" value="MEC">MEC<br>
-                        <input type="checkbox" name="groups" value="CEC">CEC<br>
-                    </div>
-                    <div id="subject" style="display:none">
-                        <textarea type="text" placeholder="Message" id="description" name="description"></textarea><br />
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-info">
-                            <span class="glyphicon glyphicon-se"></span> Send Notification
-                        </button>
-                    </div>
+                // Pause when cursor is over carousel
+                window.addEventListener('resize', function () {
+                    _this.width = _this._slides.offsetWidth;
+                });
+            },
+            pause: function pause() {
+                this.paused = true;
+            },
+            start: function start() {
+                this.paused = false;
+            },
+            stop: function stop() {
+                this.stopped = true;
+            },
+            _animate: function _animate() {
+                var _this2 = this;
+
+                var slides = this._slides;
+                var oneThird = slides.lastElementChild.getBoundingClientRect().right / 3;
+                var framesCount = 0;
+                var step = 0;
+                var posX = 0;
+
+                var animate = function animate() {
+                    if (!_this2.paused) {
+
+                        framesCount = _this2.options.speed * 60 / 1000;
+                        step = oneThird / framesCount;
+
+                        posX += _this2.options.reverse ? step : -step;
+
+                        slides.style.transform = 'translateX(' + posX + 'px)';
+
+                        if (_this2.options.reverse) {
+                            if (posX >= _this2.width - oneThird) {
+                                posX = _this2.width - oneThird * 2;
+                            }
+                        } else {
+                            if (Math.abs(posX) >= oneThird * 2) {
+                                posX = -oneThird;
+                            }
+                        }
+                    }
+                    !_this2.stopped && requestAnimationFrame(animate);
+                };
+                animate();
             }
-        </div>
-    </div>
+        };
 
-    <script>
-        /*
-    ------------------------------------------------------------
-    Function to activate form button to open the slider.
-    ------------------------------------------------------------
-    */
-        function open_panel() {
-            slideIt();
-            var a = document.getElementById("sidebar");
-            a.setAttribute("id", "sidebar1");
-            a.setAttribute("onclick", "close_panel()");
-        }
-        /*
-        ------------------------------------------------------------
-        Function to slide the sidebar form (open form)
-        ------------------------------------------------------------
-        */
-        function slideIt() {
-            var slidingDiv = document.getElementById("slider");
-            var stopPosition = 0;
-            if (parseInt(slidingDiv.style.right) < stopPosition) {
-                slidingDiv.style.right = parseInt(slidingDiv.style.right) + 2 + "px";
-                setTimeout(slideIt, 1);
-            }
-        }
-        /*
-        ------------------------------------------------------------
-        Function to activate form button to close the slider.
-        ------------------------------------------------------------
-        */
-        function close_panel() {
-            slideIn();
-            a = document.getElementById("sidebar1");
-            a.setAttribute("id", "sidebar");
-            a.setAttribute("onclick", "open_panel()");
-        }
-        /*
-        ------------------------------------------------------------
-        Function to slide the sidebar form (slide in form)
-        ------------------------------------------------------------
-        */
-        function slideIn() {
-            var slidingDiv = document.getElementById("slider");
-            var stopPosition = -342;
-            if (parseInt(slidingDiv.style.right) > stopPosition) {
-                slidingDiv.style.right = parseInt(slidingDiv.style.right) - 2 + "px";
-                setTimeout(slideIn, 1);
-            }
-        }
-        /////
+        _carousel.init(options);
 
-        function hideAppNo(value) {
-            if (value == "1") {
-                document.getElementById("appno").style.display = "block";
-                document.getElementById("subject").style.display = "block";
-                document.getElementById("Groups").style.display = "none";
-            }
-            else if (value == "2") {
-                document.getElementById("appno").style.display = "none";
-                document.getElementById("subject").style.display = "block";
-                document.getElementById("Groups").style.display = "block";
-            }
-            else if (value == "3") {
-                document.getElementById("appno").style.display = "none";
-                document.getElementById("subject").style.display = "block";
-                document.getElementById("Groups").style.display = "none";
-            }
-        }
-    </script>
-    <style>
+        return _carousel;
+    };
 
-        #slider {
-            width: 500px;
-            top: 150px;
-            position: absolute;
-        }
+    window.onload = function () {
+        return carousel({
+            selector: '.c-carousel'
+        });
+    };
+</script>
+<style>
+    body {
+        margin: 0;
+        background-color: white;
+    }
 
-        #header {
-            width: 333px;
-            height: 520px;
-            position: absolute;
-            right: 0;
-            border: 1px solid #d8d8d8;
-            margin-left: 40px;
-            padding: 20px 40px;
-            border-radius: 3px;
-            box-shadow: 0 0 8px gray;
-        }
+    #img {
+        display: block;
+        height: 700px;
+        margin-right: 10px;
+    }
 
-        #sidebar {
-            position: absolute;
-            top: 100px;
-            left: 113px;
-            box-shadow: 0 0 8px gray;
-        }
+    .c-carousel {
+        width: 100%;
+        position: relative;
+        margin-top: 30px;
+    }
 
-        #sidebar1 {
-            position: absolute;
-            top: 100px;
-            left: 113px;
-            box-shadow: 0 0 8px gray;
-        }
+    .c-carousel__arrow {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        z-index: 1;
+        -webkit-transform: translateY(-50%) rotate(45deg);
+        transform: translateY(-50%) rotate(45deg);
+        background-color: white;
+    }
 
-        h3 {
-            font-family: 'Roboto Slab',serif;
-        }
+    .c-carousel__arrow--left {
+        left: 15px;
+    }
 
-        input[type=text] {
-            margin-top: 10px;
-            padding: 6px;
-            width: 100%;
-            font-size: 15px;
-            border-radius: 2px;
-            border: 3px solid #98d0f1;
-        }
+    .c-carousel__arrow--right {
+        right: 15px;
+    }
 
-        h4 {
-            font-size: 15px;
-        }
-
-        div#title {
-            position: absolute;
-            top: 300px;
-            left: 650px;
-        }
-
-        select {
-            padding: 6px;
-            width: 100%;
-            font-size: 15px;
-            border-radius: 2px;
-            border: 3px solid #98d0f1;
-        }
-
-        textarea {
-            padding: 6px;
-            font-size: 15px;
-            border-radius: 2px;
-            border: 3px solid #98d0f1;
-            margin-top: 10px;
-            height: 80px;
-            width: 100%;
-        }
-
-        button {
-            background: #2bc1f2;
-            border: none;
-            color: #fff;
-            width: 100%;
-            font-size: 22px;
-            font-weight: bolder;
-            padding: 8px 0;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-top: 25px;
-        }
-    </style>
-
-*@
+    .c-carousel__slides {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        will-change: transform;
+    }
+</style>
+<div class="c-carousel">
+    <div class="c-carousel__arrow c-carousel__arrow--left"></div>
+    <div class="c-carousel__arrow c-carousel__arrow--right"></div>
+    <ul class="c-carousel__slides">
+        <li><img id="img" src="~/images/1.png" /></li>
+        <li><img id="img" src="~/images/2.png" /></li>
+        <li><img id="img" src="~/images/3.png" /></li>
+        <li><img id="img" src="~/images/4.png" /></li>
+    </ul>
+</div>

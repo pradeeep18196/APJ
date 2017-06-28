@@ -55,7 +55,7 @@ namespace WebApplication.Areas.Admin.Controllers
                 if (appNo != null)
                 {
                     ViewBag.Message = "THIS CANDIDATE ALREADY EXIXTS with ApplicationNo : " + appNo;
-                    return View("DuplicateRecord");
+                    return View("_PopUp");
                 }
                 else
                 {

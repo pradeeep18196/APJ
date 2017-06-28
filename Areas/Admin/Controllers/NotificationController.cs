@@ -26,8 +26,8 @@ namespace WebApplication.Areas.Admin.Controllers
 
         public IActionResult SendNotification(int selection, string AppNo_AadharNo, string description, string[] groups)
         {
-            if (_notification.IsExists(AppNo_AadharNo))
-            {
+            //if (_notification.IsExists(AppNo_AadharNo))
+            //{
                 if (selection == 1)
                 {
                     _notification.SendToIndividualStudent(AppNo_AadharNo, description);
@@ -40,11 +40,11 @@ namespace WebApplication.Areas.Admin.Controllers
                 {
                     _notification.SendToAllStudents(description);
                 }
-            }
-            else
-            {
-                return View();
-            }
+            //}
+            //else
+            //{
+            //    return View();
+            //}
             return View();
         }
     }        

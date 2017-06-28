@@ -14,7 +14,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>        
 
     </environment>
     <environment names="Staging,Production">
@@ -27,134 +27,15 @@
         .navbar-inverse {
             border-color: #337ab7;
         }
-    </style>
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top" span style="background-color:#101010;">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @*<a asp-area="Admin" asp-controller="Admission" asp-action="Index" style="color:white" class="navbar-brand">APJ AbdulKalam</a>*@
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="/Admin" style="font-size:18px"> Home</a></li>
-                <li>
-                    <a href="#" data-popover="true" data-html=true data-placement="bottom" style="font-size:18px" data-content='<a href="http://localhost:2473/Admin/Admission/AddStudent">New Admission</a><br/><br/><a href="http://localhost:2473/Admin/Admission/EditStudent">Edit Admission</a><br/><br/><a href="http://localhost:2473/Admin/Admission/ShowAllStudents">ShowAllAdmissions</a><br/><br/><a href="http://localhost:2473/Admin/Admission/DeleteStudent">Delete Admission</a>'>
-                        Admission
-                    </a>
-                </li>
-            </ul>
-            <div class="navbar-collapse collapse">
-                @*<ul class="nav navbar-nav">
-                        <li><a asp-area="Admin" asp-controller="Admission" asp-action="Index" style="color:white">Admission</a></li>
-                    </ul>*@
-                @await Html.PartialAsync("_UserHeader")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <div id="slider" style="right:-342px;">
-            <div id="sidebar" onclick="open_panel()">
-                <img src="~/images/abc.png">
-            </div>
-            <div id="header">
-                @using (Html.BeginForm("SendNotification", "Notification"))
-                {
-                    <br /><br /><br />
-                    <select id="selection" name="selection" onchange="hideAppNo(this.value)">
-                        <option value="" disabled selected style="display: none;">Select your option</option>
-                        <option value="1">Send To Individual Student</option>
-                        <option value="2">Send By Group</option>
-                        <option value="3">Send To AllStudents</option>
-                    </select><br />
-                    <div id="appno" style="display:none">
-                        <input placeholder="Application/Aadhar No" type="text" name="appno">
-                    </div>
-                    <div id="Groups" style="display:none">
-                        <br />
-                        <label>Groups</label> <br />
-                        <input type="checkbox" name="groups" value="MPC">MPC<br>
-                        <input type="checkbox" name="groups" value="Bipc">Bipc<br>
-                        <input type="checkbox" name="groups" value="MEC">MEC<br>
-                        <input type="checkbox" name="groups" value="CEC">CEC<br>
-                    </div>
-                    <div id="subject" style="display:none">
-                        <textarea type="text" placeholder="Message" id="description" name="description"></textarea><br />
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-info">
-                            <span class="glyphicon glyphicon-se"></span> Send Notification
-                        </button>
-                    </div>
-                }
-            </div>
-        </div>
 
-        <script>
-            function open_panel() {
-                slideIt();
-                var a = document.getElementById("sidebar");
-                a.setAttribute("id", "sidebar1");
-                a.setAttribute("onclick", "close_panel()");
-            }
-
-            function slideIt() {
-                var slidingDiv = document.getElementById("slider");
-                var stopPosition = 0;
-                if (parseInt(slidingDiv.style.right) < stopPosition) {
-                    slidingDiv.style.right = parseInt(slidingDiv.style.right) + 2 + "px";
-                    setTimeout(slideIt, 1);
-                }
-            }
-
-            function close_panel() {
-                slideIn();
-                a = document.getElementById("sidebar1");
-                a.setAttribute("id", "sidebar");
-                a.setAttribute("onclick", "open_panel()");
-            }
-
-            function slideIn() {
-                var slidingDiv = document.getElementById("slider");
-                var stopPosition = -342;
-                if (parseInt(slidingDiv.style.right) > stopPosition) {
-                    slidingDiv.style.right = parseInt(slidingDiv.style.right) - 2 + "px";
-                    setTimeout(slideIn, 1);
-                }
-            }
-
-            function hideAppNo(value) {
-                if (value == "1") {
-                    document.getElementById("appno").style.display = "block";
-                    document.getElementById("subject").style.display = "block";
-                    document.getElementById("Groups").style.display = "none";
-                }
-                else if (value == "2") {
-                    document.getElementById("appno").style.display = "none";
-                    document.getElementById("subject").style.display = "block";
-                    document.getElementById("Groups").style.display = "block";
-                }
-                else if (value == "3") {
-                    document.getElementById("appno").style.display = "none";
-                    document.getElementById("subject").style.display = "block";
-                    document.getElementById("Groups").style.display = "none";
-                }
-            }
-        </script>
-        <style>
-            #slider {
+        #slider {
                 width: 500px;
                 top: 150px;
                 position: absolute;
             }
 
             #header {
+                background-color: white;
                 width: 333px;
                 height: 520px;
                 position: absolute;
@@ -184,7 +65,7 @@
                 font-family: 'Roboto Slab',serif;
             }
 
-            input[type=text] {
+            .InputField {
                 margin-top: 10px;
                 padding: 6px;
                 width: 100%;
@@ -203,7 +84,7 @@
                 left: 650px;
             }
 
-            select {
+            #selection {
                 padding: 6px;
                 width: 100%;
                 font-size: 15px;
@@ -221,7 +102,7 @@
                 width: 100%;
             }
 
-            button {
+            #btn {
                 background: #2bc1f2;
                 border: none;
                 color: #fff;
@@ -233,7 +114,73 @@
                 cursor: pointer;
                 margin-top: 25px;
             }
-        </style>
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" span style="background-color:#101010;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Admission" asp-action="Index" style="font-size:18px"> Home</a>
+                    <li>
+                        <script src="~/js/PopHover.js"></script>
+                        <a href="#" data-popover="true" data-html=true data-placement="bottom" style="font-size:18px" data-content='<a href="http://localhost:2473/Admin/Admission/AddStudent">New Admission</a><br/><br/><a href="http://localhost:2473/Admin/Admission/EditStudent">Edit Admission</a><br/><br/><a href="http://localhost:2473/Admin/Admission/ShowAllStudents">ShowAllAdmissions</a><br/><br/><a href="http://localhost:2473/Admin/Admission/DeleteStudent">Delete Admission</a>'>
+                            Admission
+                        </a>
+                    </li>
+                </ul>
+                @await Html.PartialAsync("_UserHeader")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <div id="slider" style="right:-342px;">
+            <div id="sidebar" onclick="open_panel()">
+                <img src="~/images/abc.png">
+            </div>
+            <div id="header">
+                @using (Html.BeginForm("SendNotification", "Notification"))
+                {
+                    <br /><br /><br />
+                    <select id="selection" name="selection" onchange="hideAppNo(this.value)">
+                        <option value="" disabled selected style="display: none;">Select your option</option>
+                        <option value="1">Send To Individual Student</option>
+                        <option value="2">Send By Group</option>
+                        <option value="3">Send To AllStudents</option>
+                    </select><br />
+                    <div id="appno" style="display:none">
+                        <input placeholder="Application/Aadhar No" class="InputField" type="text" name="AppNo_AadharNo">
+                    </div>
+                    <div id="Groups" style="display:none">
+                        <br />
+                        <label>Groups</label> <br />
+                        <input type="checkbox" name="groups" value="MPC">MPC<br>
+                        <input type="checkbox" name="groups" value="Bipc">Bipc<br>
+                        <input type="checkbox" name="groups" value="MEC">MEC<br>
+                        <input type="checkbox" name="groups" value="CEC">CEC<br>
+                    </div>
+                    <div id="subject" style="display:none">
+                        <textarea type="text" placeholder="Message" id="description" name="description"></textarea><br />
+                    </div>
+                    <div>
+                        <button id="btn" type="submit" class="btn btn-info">
+                            <span class="glyphicon glyphicon-se"></span> Send Notification
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
         <footer style="position:fixed;top:95%">
             @*<p>&copy; 2016 - Innovative Software Solutions</p>*@
         </footer>

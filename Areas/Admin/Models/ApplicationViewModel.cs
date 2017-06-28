@@ -7,7 +7,7 @@ namespace WebApplication.Areas.Admin.Models
     public class ApplicationViewModel
     {
         public string ApplicationNo { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The Surname field  is required")]
         public string Surname { get; set; }
         [Required]
         [StringLength(30)]
